@@ -236,7 +236,7 @@ body.fb .sbar,body.fb .nbar,body.fb .cam,body.fb .hw{display:none!important}
 /* ── journey chrome (partner-branded, Decentro-powered) ── */
 .sdk{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--s-bg);transform:translateY(102%);transition:transform .38s cubic-bezier(.2,.8,.2,1);z-index:10}
 .sdk.open{transform:none}
-.s-head{flex:none;display:flex;align-items:center;gap:11px;padding:10px 16px 11px;border-bottom:1px solid var(--s-bd)}
+.s-head{flex:none;position:relative;z-index:2;background:var(--s-bg);display:flex;align-items:center;gap:11px;padding:10px 16px 11px;border-bottom:1px solid var(--s-bd)}
 .s-logo{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-weight:700;font-size:14px;background:var(--s-p);color:var(--s-onp);flex:none;letter-spacing:-.03em}
 .s-head .ht{flex:1;min-width:0}
 .s-head .ht b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -252,7 +252,7 @@ body.fb .sbar,body.fb .nbar,body.fb .cam,body.fb .hw{display:none!important}
 .s-rail .rt{flex:none;font-size:10.5px;font-weight:600;color:var(--s-tx2);padding-left:10px;font-variant-numeric:tabular-nums;white-space:nowrap}
 .s-body{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:20px 18px 12px;display:flex;flex-direction:column;gap:14px;scrollbar-width:none}
 .s-body::-webkit-scrollbar{display:none}
-.s-foot{flex:none;text-align:center;padding:7px 0 9px;font-size:11px;color:var(--s-tx2);display:flex;align-items:center;justify-content:center;gap:6px}
+.s-foot{flex:none;position:relative;z-index:2;background:var(--s-bg);text-align:center;padding:7px 0 9px;font-size:11px;color:var(--s-tx2);display:flex;align-items:center;justify-content:center;gap:6px}
 .s-foot svg.pbl{width:64px;height:12px;color:var(--s-tx);flex:none}
 .s-act{margin-top:auto;display:flex;flex-direction:column;gap:7px;padding-top:8px;flex:none}
 .s-title{font-size:var(--s-ts);font-weight:700;letter-spacing:-.015em;line-height:1.24;margin:0;text-wrap:balance}
@@ -463,6 +463,56 @@ li.fail small{color:var(--s-err);font-weight:500}
 .toast{position:absolute;left:14px;right:14px;bottom:14px;z-index:46;background:#18181b;color:#fafafa;border-radius:11px;padding:10px 13px;font:500 11.5px/1.45 var(--mono);opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .25s,transform .25s,visibility .25s}
 .toast.on{opacity:1;visibility:visible;transform:none}
 
+/* ── screen 2 · backstage: what the customer never sees ── */
+.pwrap{gap:16px;align-items:stretch}
+#phwrap{flex:1 1 auto;min-width:0;display:flex;align-items:center;justify-content:center}
+.bswrap{flex:0 0 clamp(290px,30%,400px);min-width:0;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden}
+.bs-head{flex:none;display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+.bs-head svg{width:15px;height:15px;color:var(--fg-2);flex:none}
+.bs-head b{font-size:var(--fs-t);font-weight:600;min-width:0}
+.bs-head .hid{margin-left:auto;font-size:10px;font-weight:600;color:var(--warn);background:var(--warn-soft);border:1px solid var(--warn-bd);border-radius:999px;padding:1px 7px;white-space:nowrap;flex:none}
+.bs-body{flex:1;min-height:0;overflow:auto;padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px}
+.bs-sub{font-size:var(--fs-s);color:var(--fg-3);line-height:1.45;margin:0 0 2px;flex:none}
+.op{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;gap:9px;align-items:flex-start;flex:none;background:var(--panel);transition:border-color .2s,background .2s}
+.op.run{border-color:var(--fg-3);background:var(--panel-2)}
+.op.ok{border-color:var(--ok-bd)}
+.op.miss{border-color:var(--warn-bd)}
+.op.fail{border-color:var(--err-bd)}
+.op .od{width:20px;height:20px;border-radius:50%;flex:none;display:grid;place-items:center;border:1.5px dashed var(--line-2);color:var(--fg-3);margin-top:1px}
+.op .od svg{width:11px;height:11px;stroke-width:3.2}
+.op.run .od{border:2px solid var(--line-2);border-top-color:var(--fg);border-style:solid;animation:rot .9s linear infinite}
+.op.ok .od{background:var(--ok);border-color:var(--ok);color:var(--panel)}
+.op.miss .od{background:var(--warn);border-color:var(--warn);color:var(--panel)}
+.op.fail .od{background:var(--err);border-color:var(--err);color:var(--panel)}
+.op.manual .od{background:var(--panel-2);border-style:solid;border-color:var(--line-2);color:var(--fg-2)}
+.op .ot{flex:1;min-width:0}
+.op .ot b{display:block;font-size:var(--fs-b);font-weight:600;line-height:1.3}
+.op .ot code{display:block;font-family:var(--mono);font-size:10px;color:var(--fg-3);margin-top:2px;overflow-wrap:anywhere}
+.op .ot .why{display:block;font-size:var(--fs-s);color:var(--fg-2);line-height:1.38;margin-top:3px}
+.op .ot .det{display:block;font-size:var(--fs-s);font-weight:600;margin-top:5px;overflow-wrap:anywhere}
+.op.ok .det{color:var(--ok)} .op.miss .det{color:var(--warn)} .op.fail .det{color:var(--err)} .op.manual .det{color:var(--fg-2)}
+.op .ms{flex:none;font-family:var(--mono);font-size:10px;color:var(--fg-3);font-variant-numeric:tabular-nums;padding-top:2px}
+.op .ill{display:inline-block;font-size:9px;font-weight:600;color:var(--info);background:var(--info-soft);border:1px solid var(--info-bd);border-radius:4px;padding:0 4px;margin-left:5px;vertical-align:1px}
+.bs-dec{flex:none;position:sticky;bottom:-12px;z-index:2;border-radius:10px;padding:10px 12px;font-size:var(--fs-s);line-height:1.5;border:1px solid var(--line);background:var(--panel-2);margin-top:2px;box-shadow:0 -8px 14px -8px var(--ring)}
+.bs-dec.go{background:var(--info-soft);border-color:var(--info-bd);color:var(--info)}
+.bs-dec.skip{background:var(--ok-soft);border-color:var(--ok-bd);color:var(--ok)}
+.bs-dec b{display:block;font-size:var(--fs-b);margin-bottom:2px}
+.bs-foot{flex:none;border-top:1px solid var(--line);padding:8px 12px;display:flex;gap:10px;flex-wrap:wrap;font-size:var(--fs-s);color:var(--fg-3)}
+.bs-foot b{color:var(--fg);font-variant-numeric:tabular-nums}
+
+body.view-cust .bswrap{display:none}
+body.view-back #phwrap{display:none}
+body.view-back .bswrap{flex:1 1 auto}
+@media (max-width:1000px){
+  .pwrap{flex-direction:column}
+  .bswrap{flex:0 1 44%;min-height:150px}
+  body.view-back .bswrap{flex:1 1 auto}
+}
+body.fb .bswrap{display:none}
+body.fb.view-back .bswrap{display:flex;flex:1 1 auto;border:0;border-radius:0}
+body.fb.view-back #phwrap{display:none}
+body.fb.view-back .stage{padding:0}
+
 /* ── developer console ── */
 .tabs{flex:none;display:flex;gap:2px;padding:8px 10px 0;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
@@ -618,6 +668,7 @@ body.devmode .tab{padding:7px 8px 8px}
   .ctl.open{transform:none;box-shadow:20px 0 40px rgba(0,0,0,.18)}
   #btnCtl{display:inline-flex}
 }
+@media (max-width:900px){ #viewSeg{display:none} }
 @media (max-width:720px){
   .brand .tag,.brand .sep,.brand b,#osSeg,#btnRestartTop .t{display:none}
   .top{gap:8px}
@@ -633,6 +684,7 @@ body.devmode .tab{padding:7px 8px 8px}
   .coach{right:-4px;width:min(232px,calc(100vw - 24px))}
 }
 @media (max-height:760px){ .ptools .opt{display:none} }
+@media (max-height:820px){ .op .ot .why{display:none} .bs-sub{display:none} }
 @media (max-height:820px){ .s-body{padding:15px 16px 10px;gap:11px} .st-em{margin:11px 0 12px} .s-prog li{padding-bottom:16px} }
 @media (max-height:700px){ .caption{display:none} }
 @media (pointer:coarse){ button,.tap{min-height:44px} .s-x,.tbtn{min-height:44px} .otp input{height:52px} }
@@ -675,6 +727,7 @@ body.devmode .tab{padding:7px 8px 8px}
     </div>
     <span class="sp"></span>
     <div class="seg modeseg" id="modeSeg" role="group" aria-label="Mode"><button type="button" data-v="demo" aria-pressed="true">Demo</button><button type="button" data-v="dev" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg>Developer</button></div>
+    <div class="seg" id="viewSeg" role="group" aria-label="View"><button type="button" data-v="cust">Customer</button><button type="button" data-v="both" aria-pressed="true">Both</button><button type="button" data-v="back">Backstage</button></div>
     <div class="seg" id="osSeg" role="group" aria-label="Platform">
       <button type="button" data-os="android" aria-pressed="true">Android</button>
       <button type="button" data-os="ios" aria-pressed="false">iOS</button>
@@ -730,6 +783,7 @@ body.devmode .tab{padding:7px 8px 8px}
     <main class="stage">
       <nav class="flowbar" id="flowbar" aria-label="Onboarding steps"></nav>
       <div class="pwrap" id="pwrap">
+        <div id="phwrap">
         <div class="sizer" id="sizer">
           <div class="device" id="device" data-os="android">
             <i class="hw l hw1"></i><i class="hw l hw2"></i><i class="hw l hw3"></i><i class="hw r hw4"></i>
@@ -768,6 +822,15 @@ body.devmode .tab{padding:7px 8px 8px}
             </div>
           </div>
         </div>
+        </div>
+        <aside class="bswrap" id="bswrap" aria-label="Background processing">
+          <div class="bs-head">
+            <svg class="i" viewBox="0 0 24 24"><path d="M9.9 5.1A10 10 0 0 1 12 4.9c5.5 0 9 5.1 9 7.1a11 11 0 0 1-2.3 3.4M6.2 6.2A12.5 12.5 0 0 0 3 12c0 2 3.5 7.1 9 7.1a9.7 9.7 0 0 0 4.3-1M3 3l18 18M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+            <b>Screen 2 &middot; backstage</b>
+            <span class="hid">Hidden from customer</span>
+          </div>
+          <div class="bs-body" id="backstage"></div>
+        </aside>
       </div>
       <p class="caption" id="caption"></p>
       <div class="ptools" id="ptools">
@@ -879,91 +942,105 @@ const maskMobile = m => '+91 ' + m.slice(0,2) + 'XXX XX' + m.slice(-3);
 
 /* ---------- journeys ---------- */
 const JOURNEYS = {
-  full:{ name:'Full journey · Decentro stack', p:'P0', steps:6, today:12,
-    d:'Mobile → prefilled PAN, DOB, name → Detailed PAN → validation + Aadhaar seeding → DigiLocker documents → account open.' },
-  manual:{ name:'Without Customer Data Pull', p:'Compare', steps:8, today:12,
-    d:'Same journey, but the customer types PAN, DOB and name themselves. Two more screens and a typo risk on every field.' }
+  axis:{ name:'Axis plan \u00b7 nothing to reconfirm', p:'P0', steps:4, today:12,
+    d:'Mobile + OTP, email + OTP, then straight to the DigiLocker page. PAN is pulled, validated and enriched in the background and never put in front of the customer.' },
+  confirm:{ name:'With a confirmation screen', p:'Compare', steps:6, today:12,
+    d:'The same checks, but the customer is shown the PAN, DOB and name that were just fetched and asked to confirm them. Two more screens, and three fields they can get wrong.' }
 };
 
 /* ---------- outcomes ---------- */
 const OUT = [
-  { id:'clean',      t:'Everything matches',            p:'P0',  tone:'ok',
-    n:'The happy path Axis will see most often: the number resolves to a profile, the PAN is valid and Aadhaar-seeded, and the name matches on the first pass.' },
-  { id:'pullmiss',   t:'Data Pull finds nothing',       p:'Fallback', tone:'wn',
-    n:'The number is not in the bureau-linked data set. The journey falls back to manual entry and everything downstream still runs.' },
-  { id:'namematch',  t:'Name match below threshold',    p:'Common', tone:'wn',
-    n:'PAN carries an initial where the customer typed a full name. DigiLocker Aadhaar plus OCR settles it without a human.' },
-  { id:'ocrfail',    t:'OCR cannot settle the name',    p:'Edge', tone:'wn',
-    n:'PAN holds initials only. Aadhaar agrees with what the customer typed but not with PAN, so the case goes to manual review with both records attached.' },
-  { id:'notseeded',  t:'PAN not linked to Aadhaar',     p:'Blocker', tone:'bad',
-    n:'Seeding status comes back in the same Detailed PAN response, so this is caught before DigiLocker, not after. The customer gets the ITD link instead of a dead end.' },
-  { id:'inoperative',t:'PAN inoperative',               p:'Blocker', tone:'bad',
-    n:'ITD has marked the PAN inoperative for non-linkage. Caught at step 3 for the price of the call you were already making.' },
-  { id:'invalidpan', t:'PAN not found',                 p:'Blocker', tone:'bad',
-    n:'Wrong PAN, or a PAN that was never issued. The customer corrects it in place and the call re-runs with the next reference ID.' },
-  { id:'dldeny',     t:'DigiLocker consent declined',   p:'Fallback', tone:'wn',
+  { id:'clean',      t:'No KRA record \u00b7 DigiLocker',  p:'P0',  tone:'ok',
+    n:'The path Axis will see most often. Everything resolves in the background, KRA has no record, so the customer lands on the DigiLocker page straight after the email OTP.' },
+  { id:'krafound',   t:'Already KYC-registered',           p:'P0',  tone:'ok',
+    n:'KRA returns an existing record, so document collection is skipped entirely. The customer never sees DigiLocker \u2014 three screens from start to signed.' },
+  { id:'pullmiss',   t:'Data Pull finds nothing',          p:'Fallback', tone:'wn',
+    n:'The only case where the customer is asked for a PAN. Everything after it still runs in the background.' },
+  { id:'namematch',  t:'Name match below threshold',       p:'Common', tone:'wn',
+    n:'PAN carries an initial where the pulled profile carries a full name. DigiLocker Aadhaar plus OCR settles it without a human and without asking the customer.' },
+  { id:'ocrfail',    t:'OCR cannot settle the name',       p:'Edge', tone:'wn',
+    n:'PAN holds initials only. Aadhaar agrees with the pulled profile but not with PAN, so the case goes to review with both records attached.' },
+  { id:'notseeded',  t:'PAN not linked to Aadhaar',        p:'Blocker', tone:'bad',
+    n:'Caught in the background chain before the customer reaches DigiLocker. This is one of the few times the silent path has to surface something.' },
+  { id:'inoperative',t:'PAN inoperative',                  p:'Blocker', tone:'bad',
+    n:'ITD has marked the PAN inoperative. Surfaced right after the email OTP rather than after the customer has done document work.' },
+  { id:'invalidpan', t:'PAN not found',                    p:'Blocker', tone:'bad',
+    n:'The pulled PAN does not validate at NSDL. The customer is asked for it once, in place, and the chain re-runs.' },
+  { id:'dldeny',     t:'DigiLocker consent declined',      p:'Fallback', tone:'wn',
     n:'The customer backs out on the government consent screen. The journey offers signed manual upload rather than ending.' },
-  { id:'dlotpfail',  t:'DigiLocker OTP fails 3×',       p:'Edge', tone:'bad',
-    n:'Three wrong OTPs lock the DigiLocker session at UIDAI. The journey saves progress and lets the customer resume.' },
-  { id:'dldown',     t:'DigiLocker unavailable',        p:'Edge', tone:'bad',
-    n:'Meity gateway returns 503. Verified PAN is already banked, so the customer resumes at step 5 and loses nothing.' },
-  { id:'otpexpired', t:'Mobile OTP expires',            p:'Edge', tone:'wn',
+  { id:'dlotpfail',  t:'DigiLocker OTP fails 3\u00d7',    p:'Edge', tone:'bad',
+    n:'Three wrong OTPs lock the session at UIDAI. Everything already verified in the background is held, so the customer resumes at the DigiLocker page.' },
+  { id:'dldown',     t:'DigiLocker unavailable',           p:'Edge', tone:'bad',
+    n:'MeitY gateway returns 503. The whole background chain is already banked, so nothing is re-run on resume.' },
+  { id:'otpexpired', t:'Mobile OTP expires',               p:'Edge', tone:'wn',
     n:'The OTP window runs out before the customer types it. Resend issues a new reference ID; the old one is dead.' }
 ];
 const outById = id => OUT.find(o => o.id === id) || OUT[0];
 
 /* ---------- API catalogue. ownership drives the badge in the console ---------- */
 const HOSTS = { DECENTRO:'in.decentro.tech', DECFIN:'api.decentro.tech', AXIS:'api.axissecurities.example', GOV:'api.digitallocker.gov.in' };
-const OWN = { decentro:'Decentro', axis:'Axis Securities', gov:'Government (UIDAI · ITD · MeitY)', customer:'Customer' };
+const OWN = { decentro:'Decentro', axis:'Axis Securities', gov:'Government (UIDAI \u00b7 ITD \u00b7 MeitY)', customer:'Customer' };
+/* bg:true marks a call the customer never sees a screen for */
 const API = {
-  otpGen:{ step:1, m:'POST', set:'AXIS', own:'axis',      path:'/v1/auth/otp/generate',                      ill:true,  label:'Send mobile OTP' },
-  otpVal:{ step:1, m:'POST', set:'AXIS', own:'axis',      path:'/v1/auth/otp/validate',                      ill:true,  label:'Validate mobile OTP' },
-  pull:  { step:2, m:'POST', set:'DECENTRO', own:'decentro', path:'/v2/financial_services/customer/data_pull', ill:false, label:'Customer Data Pull' },
-  pan:   { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/v3/kyc/pan',                              ill:false, label:'Detailed PAN' },
-  dlInit:{ step:5, m:'POST', set:'DECENTRO', own:'decentro', path:'/kyc/digilocker/documents',                ill:false, label:'DigiLocker · start session' },
-  dlOtp: { step:5, m:'POST', set:'DECENTRO', own:'decentro', path:'/kyc/digilocker/otp/validate',             ill:true,  label:'DigiLocker · validate OTP' },
-  dlFetch:{step:5, m:'GET',  set:'DECENTRO', own:'decentro', path:'/kyc/digilocker/documents/{session_id}',   ill:true,  label:'DigiLocker · fetch documents' },
-  ocr:   { step:5, m:'POST', set:'DECENTRO', own:'decentro', path:'/v3/kyc/ocr/document',                     ill:true,  label:'OCR · extract name' },
-  open:  { step:6, m:'POST', set:'AXIS', own:'axis',      path:'/v1/onboarding/accounts',                     ill:true,  label:'Open demat account' }
+  otpGen:  { step:1, m:'POST', set:'AXIS',     own:'axis',     path:'/v1/auth/otp/generate',                    ill:true,  label:'Send mobile OTP' },
+  otpVal:  { step:1, m:'POST', set:'AXIS',     own:'axis',     path:'/v1/auth/otp/validate',                    ill:true,  label:'Validate mobile OTP' },
+  emGen:   { step:2, m:'POST', set:'AXIS',     own:'axis',     path:'/v1/auth/email/otp/generate',              ill:true,  label:'Send email OTP' },
+  emVal:   { step:2, m:'POST', set:'AXIS',     own:'axis',     path:'/v1/auth/email/otp/validate',              ill:true,  label:'Validate email OTP' },
+  pull:    { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/v2/financial_services/customer/data_pull', ill:false, bg:true, label:'Customer Data Pull' },
+  panVal:  { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/v3/kyc/pan',                              ill:false, bg:true, label:'PAN validation \u00b7 NSDL' },
+  panDet:  { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/v3/kyc/pan/detailed',                     ill:true,  bg:true, label:'Detailed PAN' },
+  kra:     { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/v2/kyc/kra/search',                       ill:true,  bg:true, label:'KRA KYC status' },
+  dlInit:  { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/kyc/digilocker/documents',                ill:false, label:'DigiLocker \u00b7 start session' },
+  dlOtp:   { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/kyc/digilocker/otp/validate',             ill:true,  label:'DigiLocker \u00b7 validate OTP' },
+  dlFetch: { step:3, m:'GET',  set:'DECENTRO', own:'decentro', path:'/kyc/digilocker/documents/{session_id}',   ill:true,  label:'DigiLocker \u00b7 fetch documents' },
+  ocr:     { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/v3/kyc/ocr/document',                     ill:true,  bg:true, label:'OCR \u00b7 extract name' },
+  open:    { step:4, m:'POST', set:'AXIS',     own:'axis',     path:'/v1/onboarding/accounts',                  ill:true,  label:'Open demat account' }
 };
+
+/* ---------- the background chain, in order. This is screen 2. ---------- */
+const OPS = [
+  { k:'pull',   t:'Customer Data Pull',   a:API.pull,   why:'Resolve the mobile number to a PAN, name and date of birth.' },
+  { k:'panVal', t:'PAN validation',       a:API.panVal, why:'Confirm the PAN exists and is active at NSDL.' },
+  { k:'panDet', t:'Detailed PAN',         a:API.panDet, why:'Name on PAN, father\u2019s name, category, Aadhaar seeding, name match.' },
+  { k:'kra',    t:'KRA KYC status',       a:API.kra,    why:'Is this PAN already KYC-registered with a KRA? Decides whether documents are needed at all.' }
+];
 
 /* ---------- screen inventory (drives the flow bar, gallery and spec tab) ---------- */
 const STEPS = [
-  { n:1, k:'Mobile',     ids:['mobile','otp','expired'] },
-  { n:2, k:'Profile',    ids:['pull','prefill'] },
-  { n:3, k:'PAN',        ids:['panproc'] },
-  { n:4, k:'Checks',     ids:['checks','blocked'] },
-  { n:5, k:'DigiLocker', ids:['dlintro','dlotp','dlpin','dlfetch','ocr','dlalt','locked','manualreview'] },
-  { n:6, k:'Account',    ids:['review','done'] }
+  { n:1, k:'Mobile',    ids:['mobile','otp','expired'] },
+  { n:2, k:'Email',     ids:['email','eotp'] },
+  { n:3, k:'Documents', ids:['bg','manualpan','blocked','kraok','dlintro','dlotp','dlpin','dlfetch','ocr','dlalt','locked','manualreview'] },
+  { n:4, k:'Account',   ids:['review','done'] }
 ];
 const stepOf = id => (STEPS.find(s => s.ids.includes(id)) || STEPS[0]).n;
 const SCREENS = {
-  host:        { t:'App home',                     g:'Entry',    tone:'',    c:'Card + Button',               purpose:'The partner app before the journey starts. Owned by Axis Securities; nothing on it is Decentro.' },
-  mobile:      { t:'1 · Mobile number',            g:'Entry',    tone:'',    c:'Field + Checkbox + Button',    purpose:'Capture the mobile number and the consent that every downstream pull is made under.' },
-  otp:         { t:'1 · Mobile OTP',               g:'Entry',    tone:'',    c:'InputGroup (OTP) + Button',    purpose:'Prove the customer holds the number. This is the number reused for DigiLocker in step 5.' },
-  expired:     { t:'1 · OTP expired',              g:'Errors',   tone:'wn',  c:'Empty + Button',               purpose:'The OTP window ran out. Resend issues a fresh reference ID.' },
-  pull:        { t:'2 · Pulling profile',          g:'Progress', tone:'',    c:'Spinner + Progress',           purpose:'Customer Data Pull running against the mobile number.' },
-  prefill:     { t:'2 · Confirm your details',     g:'Entry',    tone:'',    c:'Field × 3 + Badge + Button',   purpose:'Show what came back, labelled by source, and let the customer correct it. The screen that removes three steps.' },
-  panproc:     { t:'3 · Verifying PAN',            g:'Progress', tone:'',    c:'Spinner + Progress',           purpose:'Detailed PAN call against ITD records.' },
-  checks:      { t:'4 · Verification result',      g:'Results',  tone:'ok',  c:'Card + Meter + Badge',         purpose:'The PAN record, the Aadhaar seeding status and the name-match score — all from one response.' },
-  blocked:     { t:'4 · Cannot proceed',           g:'Errors',   tone:'bad', c:'Empty + Alert + Button',       purpose:'A hard stop from ITD: PAN invalid, inoperative, or not seeded with Aadhaar. Shows the remedy, not a dead end.' },
-  dlintro:     { t:'5 · DigiLocker consent',       g:'Payment',  tone:'',    c:'Card + Checkbox + Button',     purpose:'What will be fetched and why, before the government surface takes over.' },
-  dlotp:       { t:'5 · DigiLocker OTP',           g:'Payment',  tone:'',    c:'InputGroup (OTP) + Button',    purpose:'Government-owned screen. Mobile-based DigiLocker auth on the number from step 1.' },
-  dlpin:       { t:'5 · DigiLocker PIN',           g:'Payment',  tone:'',    c:'Field + Button',               purpose:'DigiLocker security PIN, where the account has one set.' },
-  dlfetch:     { t:'5 · Fetching documents',       g:'Progress', tone:'',    c:'Progress + Document rows',     purpose:'Issued Aadhaar XML and PAN pulled from the locker, signatures checked.' },
-  ocr:         { t:'5 · Name match from Aadhaar',  g:'Progress', tone:'wn',  c:'Card + Meter',                 purpose:'Runs only when the PAN name match is below threshold. Settles the name without a human.' },
-  dlalt:       { t:'5 · Upload instead',           g:'Errors',   tone:'wn',  c:'Upload rows + Button',         purpose:'Consent declined or DigiLocker down. Signed manual upload keeps the journey alive.' },
-  locked:      { t:'5 · DigiLocker locked',        g:'Errors',   tone:'bad', c:'Empty + Button',               purpose:'Three failed OTPs. Progress is saved and the customer resumes later.' },
-  manualreview:{ t:'5 · Sent for review',          g:'Errors',   tone:'wn',  c:'Empty + Card',                 purpose:'Automated checks could not settle the identity. Both records go to the ops queue.' },
-  review:      { t:'6 · Review and submit',        g:'Results',  tone:'',    c:'Card + Checkbox + Button',     purpose:'Everything verified in one place before the account is opened.' },
-  done:        { t:'6 · Account open',             g:'Results',  tone:'ok',  c:'Empty + Card',                 purpose:'Client ID, DP ID and the step count against the old flow.' }
+  host:        { t:'App home',                     g:'Entry',    tone:'',    c:'Card + Button',             purpose:'The partner app before the journey starts. Owned by Axis Securities; nothing on it is Decentro.' },
+  mobile:      { t:'1 \u00b7 Mobile number',      g:'Entry',    tone:'',    c:'Field + Checkbox + Button', purpose:'The mobile number and the consent every background pull is made under. Reused for DigiLocker later, so it is never typed twice.' },
+  otp:         { t:'1 \u00b7 Mobile OTP',         g:'Entry',    tone:'',    c:'InputGroup (OTP) + Button', purpose:'Prove the customer holds the number.' },
+  expired:     { t:'1 \u00b7 OTP expired',        g:'Errors',   tone:'wn',  c:'Empty + Button',            purpose:'The OTP window ran out. Resend issues a fresh reference ID.' },
+  email:       { t:'2 \u00b7 Email address',      g:'Entry',    tone:'',    c:'Field + Button',            purpose:'Email for the contract note and statements. The last thing the customer types in the happy path.' },
+  eotp:        { t:'2 \u00b7 Email OTP',          g:'Entry',    tone:'',    c:'InputGroup (OTP) + Button', purpose:'Prove the address is live before anything is sent to it.' },
+  bg:          { t:'3 \u00b7 Setting up',         g:'Progress', tone:'',    c:'Spinner + Progress',        purpose:'The only thing the customer sees while Data Pull, PAN validation, Detailed PAN and the KRA check run. Screen 2 shows what is actually happening.' },
+  manualpan:   { t:'3 \u00b7 PAN (fallback only)',g:'Entry',    tone:'wn',  c:'Field + Button',            purpose:'Shown only when Data Pull returns no record. The one case where the customer is asked for a PAN.' },
+  blocked:     { t:'3 \u00b7 Cannot proceed',     g:'Errors',   tone:'bad', c:'Empty + Alert + Button',    purpose:'A hard stop from ITD surfaced out of the background chain: PAN invalid, inoperative, or not seeded with Aadhaar.' },
+  kraok:       { t:'3 \u00b7 Already KYC-verified',g:'Results', tone:'ok',  c:'Empty + Card + Button',     purpose:'KRA holds a record, so no documents are collected. DigiLocker is skipped entirely.' },
+  dlintro:     { t:'3 \u00b7 DigiLocker consent', g:'Payment',  tone:'',    c:'Card + Checkbox + Button',  purpose:'The page Axis plans to show straight after the email OTP. What will be fetched and why.' },
+  dlotp:       { t:'3 \u00b7 DigiLocker OTP',     g:'Payment',  tone:'',    c:'InputGroup (OTP) + Button', purpose:'Government-owned screen. Mobile-based DigiLocker auth on the number from step 1.' },
+  dlpin:       { t:'3 \u00b7 DigiLocker PIN',     g:'Payment',  tone:'',    c:'Field + Button',            purpose:'DigiLocker security PIN, where the account has one set.' },
+  dlfetch:     { t:'3 \u00b7 Fetching documents', g:'Progress', tone:'',    c:'Progress + Document rows',  purpose:'Issued Aadhaar XML and PAN pulled from the locker, signatures checked.' },
+  ocr:         { t:'3 \u00b7 Name match (silent)',g:'Progress', tone:'wn',  c:'Card + Meter',              purpose:'Runs only when the PAN name match is below threshold. Settles the name without a human and without a question to the customer.' },
+  dlalt:       { t:'3 \u00b7 Upload instead',     g:'Errors',   tone:'wn',  c:'Upload rows + Button',      purpose:'Consent declined or DigiLocker down. Signed manual upload keeps the journey alive.' },
+  locked:      { t:'3 \u00b7 DigiLocker locked',  g:'Errors',   tone:'bad', c:'Empty + Button',            purpose:'Three failed OTPs. Everything verified in the background is held and the customer resumes.' },
+  manualreview:{ t:'3 \u00b7 Sent for review',    g:'Errors',   tone:'wn',  c:'Empty + Card',              purpose:'Automated checks could not settle the identity. Both records go to the ops queue.' },
+  review:      { t:'4 \u00b7 Review and sign',    g:'Results',  tone:'',    c:'Card + Checkbox + Button',  purpose:'The first and only time the customer is shown what was fetched \u2014 because they are signing it, not correcting it.' },
+  done:        { t:'4 \u00b7 Account open',       g:'Results',  tone:'ok',  c:'Empty + Card',              purpose:'Client ID, DP ID and the screens the customer actually touched against the old flow.' }
 };
 
 /* ============================================================
    STATE
    ============================================================ */
 const st = {
-  j:'full', out:'clean',
+  j:'axis', out:'clean', view:'both',
   cfg:{ threshold:85, ocr:true, prefillEditable:true, dlPin:false, otpWindow:60, docs:['AADHAAR','PAN'], esign:true },
   th:{ preset:'axis', dark:false, primary:null, btnStyle:null, btnCase:null },
   os:'android', speed:1, run:0, logN:0, t0:Date.now(), mode:'demo',
@@ -1020,11 +1097,13 @@ function freshRun(){
   Object.assign(st, {
     screen:'host', sdkOpen:false, jid:uuid(), t0:Date.now(), startedAt:null, finishedAt:null,
     consent:false, consentAt:null, dlConsent:false, finalConsent:false,
-    otp:'', otpTries:0, otpLeft:cfg.otpWindow, otpSent:0, dlOtp:'', dlTries:0, dlLeft:cfg.otpWindow, dlPinV:'',
-    touched:{}, errs:{}, busy:false, pulled:null, pan:null, ocrName:null, ocrScore:null,
+    otp:'', otpTries:0, otpLeft:cfg.otpWindow, otpSent:0, emOtp:'', emLeft:cfg.otpWindow,
+    dlOtp:'', dlTries:0, dlLeft:cfg.otpWindow, autofilled:false,
+    touched:{}, errs:{}, busy:false, pulled:null, pan:null, kra:null, decision:null, ocrName:null, ocrScore:null,
     docs:{ AADHAAR:'wait', PAN:'wait' }, blockReason:null, reviewRef:null,
     net:[], netN:0, cbs:[], netOpen:null, overlay:null, steps:{}, ended:false,
-    form:{ mobile:'', pan:'', dob:'', name:'', dlPinV:'' }, prefilled:{}
+    ops:{}, seen:new Set(),
+    form:{ mobile:'', email:'', pan:'', dob:'', name:'', dlPinV:'' }, prefilled:{}
   });
   clearTimers();
 }
@@ -1097,9 +1176,9 @@ function buildCompare(){
   $('#cmpc').innerHTML =
     row('Axis today', J.today, 'var(--fg-3)') +
     row('This journey', J.steps, 'var(--fg)') +
-    '<p class="ft">' + (J.steps < J.today
-      ? 'Prefill from the mobile number, the seeding check riding along in the Detailed PAN response, and DigiLocker replacing document upload take <b>' + (J.today - J.steps) + ' steps</b> out of the flow.'
-      : 'Without prefill the customer types PAN, DOB and name, so two screens come back and every field is a drop-off risk.') + '</p>';
+    '<p class="ft">' + (st.j === 'axis'
+      ? 'Mobile, email, DigiLocker, sign. PAN is pulled, validated and enriched in the background, so there is <b>nothing to reconfirm</b> and two fields to type. A KRA hit drops it to three.'
+      : 'The same checks, but the customer is shown what was just fetched and asked to confirm it — <b>two extra screens</b> and three fields they can get wrong.') + '</p>';
 }
 function buildJourneys(){
   $('#jlist').innerHTML = Object.entries(JOURNEYS).map(([k,j]) =>
@@ -1131,7 +1210,7 @@ function buildPresets(){
 function syncControls(){
   buildCompare(); buildJourneys(); buildOutcomes(); buildCfg();
   segSet('#spSeg', st.speed); segSet('#osSeg', st.os);
-  $('#btnFill').hidden = !(st.screen === 'prefill' && st.pulled === null);
+  $('#btnFill').hidden = st.screen !== 'manualpan';
 }
 
 /* ============================================================
@@ -1139,7 +1218,7 @@ function syncControls(){
    and scaled by playback speed, exactly as the real integration behaves.
    ============================================================ */
 function net(o){
-  const e = { id:++st.netN, at:(Date.now()-st.t0)/1000, kind:o.kind || 'API', step:o.a.step, own:o.a.own, ill:o.a.ill,
+  const e = { id:++st.netN, at:(Date.now()-st.t0)/1000, kind:o.kind || 'API', step:o.a.step, own:o.a.own, ill:o.a.ill, bg:!!o.a.bg,
     method:o.a.m, host:HOSTS[o.a.set], path:o.path || o.a.path, set:o.a.set, ref:o.ref || null,
     headers:{ 'Authorization':'Bearer ' + tokenStr(o.a.set), 'Content-Type':'application/json' },
     body:o.body || null, http:o.http, res:o.res, ms:o.ms, label:o.a.label };
@@ -1163,12 +1242,15 @@ function cb(name, body, tone){
 
 /* ---------- payload builders: real field names, API contract order ---------- */
 const consentBlock = () => ({ consent:true, consent_purpose:'Customer onboarding and KYC for a demat and trading account', consent_timestamp:st.consentAt || istISO() });
-const pullReq = () => ({ reference_id:ref('PULL'), ...consentBlock(), mobile:st.form.mobile });
-const panReq = n => ({ reference_id:ref('PAN', n), ...consentBlock(), pan:st.form.pan, name:st.form.name, dob:st.form.dob });
+const pullReq   = () => ({ reference_id:ref('PULL'), ...consentBlock(), mobile:st.form.mobile });
+const panValReq = n => ({ reference_id:ref('PANV', n), ...consentBlock(), pan:st.form.pan });
+const panDetReq = n => ({ reference_id:ref('PAND', n), ...consentBlock(), pan:st.form.pan, name:st.form.name, dob:st.form.dob });
+const kraReq    = () => ({ reference_id:ref('KRA'), ...consentBlock(), pan:st.form.pan, date_of_birth:st.form.dob });
 const dlInitReq = () => ({ reference_id:ref('DL'), ...consentBlock(), purpose:'ONBOARDING', mobile:st.form.mobile, documents:cfg.docs, redirect_url:'https://onboarding.axissecurities.example/digilocker/callback' });
-const ocrReq = () => ({ reference_id:ref('OCR'), ...consentBlock(), document_type:'AADHAAR', source:'DIGILOCKER', extract:['name','date_of_birth'] });
-const openReq = () => ({ reference_id:ref('ACC'), client_type:'INDIVIDUAL', pan:st.form.pan, name:st.pan && st.pan.name || st.form.name,
-  dob:st.form.dob, mobile:st.form.mobile, email:P.email, kyc_mode:'DIGILOCKER', kyc_reference_id:ref('DL'),
+const ocrReq    = () => ({ reference_id:ref('OCR'), ...consentBlock(), document_type:'AADHAAR', source:'DIGILOCKER', extract:['name','date_of_birth'] });
+const openReq   = () => ({ reference_id:ref('ACC'), client_type:'INDIVIDUAL', pan:st.form.pan, name:(st.pan && st.pan.name) || st.form.name,
+  dob:st.form.dob, mobile:st.form.mobile, email:st.form.email, kyc_mode:st.kra && st.kra.found ? 'KRA' : 'DIGILOCKER',
+  kyc_reference_id:st.kra && st.kra.found ? ref('KRA') : ref('DL'),
   name_match_score:nameScore(), aadhaar_seeded:!!(st.pan && st.pan.seeded), esign:cfg.esign });
 
 /* ---------- responses ---------- */
@@ -1177,30 +1259,49 @@ const pullRes = () => envl(hex32(), 'SUCCESS', 'record_found', {
   email:P.email, address:P.address, alternate_mobile:P.altMobile, confidence:'HIGH', sources:2 });
 const pullEmpty = () => envl(hex32(), 'SUCCESS', 'no_record_found', { mobile:st.form.mobile, name:null, pan:null, date_of_birth:null, confidence:null, sources:0 },
   'No profile linked to this mobile number');
-function panRes(){
+function panValRes(){
   const r = st.pan;
   if (r.status === 'NOT_FOUND') return envl(hex32(), 'FAILURE', 'pan_not_found', { pan:r.pan, status:'NOT_FOUND' }, 'PAN does not exist in ITD records');
-  return envl(hex32(), 'SUCCESS', 'pan_verified', {
-    pan:r.pan, status:r.status, name_as_per_pan:r.name, name_match:nameScore(), name_match_result:nameScore() >= cfg.threshold ? 'MATCH' : 'PARTIAL_MATCH',
-    date_of_birth:r.dob, father_name:r.father, category:r.category, aadhaar_seeding_status:r.seeded ? 'LINKED' : 'NOT_LINKED',
-    last_updated:r.updated });
+  return envl(hex32(), 'SUCCESS', 'pan_valid', { pan:r.pan, status:r.status, registered_name_present:true });
+}
+function panDetRes(){
+  const r = st.pan;
+  return envl(hex32(), 'SUCCESS', 'pan_details_fetched', {
+    pan:r.pan, status:r.status, name_as_per_pan:r.name, name_match:nameScore(),
+    name_match_result:nameScore() >= cfg.threshold ? 'MATCH' : 'PARTIAL_MATCH',
+    date_of_birth:r.dob, father_name:r.father, category:r.category,
+    aadhaar_seeding_status:r.seeded ? 'LINKED' : 'NOT_LINKED', last_updated:r.updated });
+}
+function kraRes(){
+  const k = st.kra;
+  return k.found
+    ? envl(hex32(), 'SUCCESS', 'kyc_record_found', { pan:st.form.pan, kyc_status:'KYC_REGISTERED', kra:k.agency,
+        kyc_date:k.date, name:st.pan.name, address_available:true, documents_required:false })
+    : envl(hex32(), 'SUCCESS', 'kyc_record_not_found', { pan:st.form.pan, kyc_status:'NOT_REGISTERED', kra:null, documents_required:true },
+        'No KRA holds a KYC record for this PAN');
 }
 
 /* ============================================================
    FLOWS
+   The customer-facing journey is short on purpose: mobile, email,
+   then whatever the background chain decided. Everything in runChain()
+   happens with no screen of its own — screen 2 is where you watch it.
    ============================================================ */
 function go(id){
-  if (st.screen === id && id !== 'otp') { render(); return; }
+  if (st.screen === id && !['otp','eotp','dlotp'].includes(id)){ render(); return; }
   st.screen = id;
-  if (!['otp','dlotp'].includes(id)) clearTimers();
-  if (id !== 'host') st.steps[stepOf(id)] = SCREENS[id] && SCREENS[id].tone === 'bad' ? 'bad' : SCREENS[id] && SCREENS[id].tone === 'wn' ? 'wn' : 'done';
+  if (!['otp','eotp','dlotp'].includes(id)) clearTimers();
+  if (id !== 'host'){
+    st.steps[stepOf(id)] = SCREENS[id] && SCREENS[id].tone === 'bad' ? 'bad' : SCREENS[id] && SCREENS[id].tone === 'wn' ? 'wn' : 'done';
+    if (SCREENS[id] && !['bg'].includes(id)) st.seen.add(id);
+  }
   log('SCREEN', (SCREENS[id] ? SCREENS[id].t : id));
   render(); renderDev(); fit();
 }
 const openSdk = () => { st.sdkOpen = true; st.startedAt = Date.now(); paintBars(); go('mobile'); };
-
 const startJourney = () => { log('USER', 'Tapped <b>' + esc(effTheme().pr.host.cta) + '</b>'); openSdk(); };
 
+/* ---------- step 1 · mobile ---------- */
 const submitMobile = guard(async () => {
   st.touched.mobile = true;
   if (!/^[6-9]\d{9}$/.test(st.form.mobile)){ st.errs.mobile = 'Enter the 10-digit mobile number linked to your Aadhaar.'; render(); return; }
@@ -1211,8 +1312,7 @@ const submitMobile = guard(async () => {
   net({ a:API.otpGen, ref:body.reference_id, body, http:200, res:envl(hex32(),'SUCCESS','otp_sent',{ otp_reference:'OTPREF' + hex32().slice(0,8), valid_for_seconds:cfg.otpWindow }),
     ms:msr(180, 420), txt:'200 · OTP sent', sum:'6-digit OTP to ' + maskMobile(st.form.mobile) + ' · valid ' + cfg.otpWindow + 's' });
   st.busy = false; st.otpSent++; st.otp = '';
-  startOtpTimer('otp');
-  go('otp');
+  startOtpTimer('otp'); go('otp');
   if (st.out !== 'otpexpired'){
     await sl(2200);
     if (st.screen === 'otp' && !st.otp){ st.otp = '418302'; st.autofilled = true; log('APP', 'OTP auto-filled from SMS (SMS Retriever API)'); render(); }
@@ -1223,10 +1323,9 @@ function startOtpTimer(which){
   clearTimers();
   const short = st.out === 'otpexpired' && which === 'otp';
   const total = short ? Math.min(cfg.otpWindow, 10) : cfg.otpWindow;
-  if (which === 'otp') st.otpLeft = total; else st.dlLeft = total;
+  if (which === 'otp') st.otpLeft = total; else if (which === 'em') st.emLeft = total; else st.dlLeft = total;
   st.tick = setInterval(() => {
-    if (which === 'otp') st.otpLeft--; else st.dlLeft--;
-    const left = which === 'otp' ? st.otpLeft : st.dlLeft;
+    const left = which === 'otp' ? --st.otpLeft : which === 'em' ? --st.emLeft : --st.dlLeft;
     if (left <= 0){
       clearTimers();
       if (which === 'otp' && st.out === 'otpexpired'){ log('WARN', 'OTP window closed before it was used'); go('expired'); return; }
@@ -1242,16 +1341,14 @@ const submitOtp = guard(async () => {
   await sl(msr(300, 650));
   net({ a:API.otpVal, ref:ref('OTP'), body:{ reference_id:ref('OTP'), mobile:st.form.mobile, otp:st.otp }, http:200,
     res:envl(hex32(),'SUCCESS','otp_validated',{ mobile_verified:true, verified_at:istISO() }), ms:msr(150, 380),
-    txt:'200 · verified', sum:'Mobile ownership proved · reused for DigiLocker in step 5' });
+    txt:'200 · verified', sum:'Mobile ownership proved · reused for DigiLocker, so it is never typed twice' });
   cb('onboarding.step_completed', { reference_id:ref('OTP'), step:'MOBILE_VERIFICATION', status:'COMPLETED', mobile:maskMobile(st.form.mobile), timestamp:istISO() });
-  clearTimers(); st.busy = false;
-  if (st.j === 'manual'){ go('prefill'); return; }
-  go('pull'); runPull();
+  clearTimers(); st.busy = false; go('email');
 });
 
 const resendOtp = guard(async () => {
   st.otpSent++; st.otp = ''; st.autofilled = false;
-  if (st.out === 'otpexpired') st.out = 'clean', buildOutcomes();
+  if (st.out === 'otpexpired'){ st.out = 'clean'; buildOutcomes(); }
   await sl(msr(200, 420));
   net({ a:API.otpGen, ref:ref('OTP', st.otpSent), body:{ reference_id:ref('OTP', st.otpSent), mobile:st.form.mobile, purpose:'ONBOARDING' },
     http:200, res:envl(hex32(),'SUCCESS','otp_sent',{ valid_for_seconds:cfg.otpWindow }), ms:msr(170, 400),
@@ -1259,54 +1356,125 @@ const resendOtp = guard(async () => {
   startOtpTimer('otp'); go('otp');
 });
 
-const runPull = guard(async () => {
-  await sl(msr(700, 1300));
-  const miss = st.out === 'pullmiss';
-  net({ a:API.pull, ref:ref('PULL'), body:pullReq(), http:200, res:miss ? pullEmpty() : pullRes(), ms:msr(620, 1150),
-    txt:miss ? '200 · no record' : '200 · record found',
-    sum:miss ? 'Nothing linked to this number — journey falls back to manual entry'
-             : 'PAN, DOB, name, address and alternate contact returned in one call' });
-  if (miss){
-    st.pulled = null; st.prefilled = {};
-    st.form.pan = ''; st.form.dob = ''; st.form.name = '';
-    log('WARN', 'No profile for this number · the customer types PAN, DOB and name');
-  } else {
+/* ---------- step 2 · email ---------- */
+const submitEmail = guard(async () => {
+  st.touched.email = true;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(st.form.email || '')){ st.errs.email = 'Enter a valid email address, e.g. name@example.com.'; render(); return; }
+  st.errs = {}; st.busy = true; render();
+  await sl(msr(260, 560));
+  net({ a:API.emGen, ref:ref('EOTP'), body:{ reference_id:ref('EOTP'), email:st.form.email, purpose:'ONBOARDING' }, http:200,
+    res:envl(hex32(),'SUCCESS','otp_sent',{ valid_for_seconds:cfg.otpWindow }), ms:msr(200, 480),
+    txt:'200 · OTP sent', sum:'Proves the address is live before contract notes are sent to it' });
+  st.busy = false; st.emOtp = ''; startOtpTimer('em'); go('eotp');
+});
+
+const submitEotp = guard(async () => {
+  if (st.emOtp.length !== 6){ st.errs.emOtp = 'Enter all 6 digits.'; render(); return; }
+  st.errs = {}; st.busy = true; render();
+  await sl(msr(300, 650));
+  net({ a:API.emVal, ref:ref('EOTP'), body:{ reference_id:ref('EOTP'), email:st.form.email, otp:st.emOtp }, http:200,
+    res:envl(hex32(),'SUCCESS','otp_validated',{ email_verified:true, verified_at:istISO() }), ms:msr(150, 380),
+    txt:'200 · verified', sum:'Last thing the customer types in the happy path' });
+  cb('onboarding.step_completed', { reference_id:ref('EOTP'), step:'EMAIL_VERIFICATION', status:'COMPLETED', email:st.form.email, timestamp:istISO() });
+  clearTimers(); st.busy = false;
+  go('bg'); runChain();
+});
+
+/* ---------- step 3 · the silent chain. No screen per call, on purpose. ---------- */
+const opState = (k, v, detail) => { st.ops[k] = { s:v, detail:detail || null, at:(Date.now()-st.t0)/1000 }; renderBackstage(); };
+
+const runChain = guard(async (from) => {
+  const stages = from ? OPS.slice(OPS.findIndex(o => o.k === from)) : OPS;
+  for (const op of stages){
+    opState(op.k, 'run');
+    await sl(msr(650, 1250));
+    const ok = await runOp(op.k);
+    if (!ok) return;
+  }
+  decide();
+});
+
+async function runOp(k){
+  if (k === 'pull'){
+    const miss = st.out === 'pullmiss';
+    net({ a:API.pull, ref:ref('PULL'), body:pullReq(), http:200, res:miss ? pullEmpty() : pullRes(), ms:msr(620, 1150),
+      txt:miss ? '200 · no record' : '200 · record found',
+      sum:miss ? 'Nothing linked to this number — the customer has to be asked for a PAN'
+               : 'PAN, name, DOB, address and alternate contact in one call. None of it is shown to the customer.' });
+    if (miss){
+      opState('pull', 'miss', 'No record for this mobile number');
+      st.pulled = null; st.form.pan = ''; st.form.name = ''; st.form.dob = '';
+      log('WARN', 'No profile for this number · the customer is asked for a PAN');
+      go('manualpan'); return false;
+    }
     st.pulled = pullRes().data;
     st.form.pan = P.pan; st.form.dob = P.dob; st.form.name = P.name;
     st.prefilled = { pan:true, dob:true, name:true };
-    cb('onboarding.step_completed', { reference_id:ref('PULL'), step:'PROFILE_PREFILL', status:'COMPLETED', fields_prefilled:['pan','name','date_of_birth','address'], timestamp:istISO() });
+    opState('pull', 'ok', st.form.pan + ' · ' + P.name);
+    cb('onboarding.step_completed', { reference_id:ref('PULL'), step:'DATA_PULL', status:'COMPLETED', fields:['pan','name','date_of_birth','address'], shown_to_customer:false, timestamp:istISO() });
+    return true;
   }
-  go('prefill');
-});
+  if (k === 'panVal'){
+    st.pan = panRecord();
+    const r = st.pan, nf = r.status === 'NOT_FOUND';
+    net({ a:API.panVal, ref:ref('PANV'), body:panValReq(), http:nf ? 422 : 200, res:panValRes(), ms:msr(500, 1050),
+      txt:nf ? '422 · pan_not_found' : '200 · ' + r.status.toLowerCase(),
+      sum:nf ? 'The pulled PAN does not validate — the customer is asked for it once' : 'PAN exists and is active at NSDL' });
+    if (nf){ opState('panVal', 'fail', 'NOT_FOUND at NSDL'); st.blockReason = 'invalidpan'; go('blocked'); return false; }
+    if (r.status === 'INOPERATIVE'){ opState('panVal', 'fail', 'INOPERATIVE'); st.blockReason = 'inoperative'; go('blocked'); return false; }
+    opState('panVal', 'ok', r.status);
+    return true;
+  }
+  if (k === 'panDet'){
+    const r = st.pan;
+    net({ a:API.panDet, ref:ref('PAND'), body:panDetReq(), http:200, res:panDetRes(), ms:msr(600, 1250),
+      txt:'200 · seeding ' + (r.seeded ? 'LINKED' : 'NOT_LINKED') + ' · name match ' + nameScore() + '%',
+      sum:'Name on PAN, father’s name, category, Aadhaar seeding and the name match — the enrichment the customer never sees' });
+    cb('kyc.pan.verified', { reference_id:ref('PAND'), pan:r.pan, status:r.status, name_match:nameScore(),
+      aadhaar_seeding_status:r.seeded ? 'LINKED' : 'NOT_LINKED', shown_to_customer:false, timestamp:istISO() });
+    if (!r.seeded){ opState('panDet', 'fail', 'Aadhaar NOT_LINKED'); st.blockReason = 'notseeded'; go('blocked'); return false; }
+    opState('panDet', 'ok', r.name + ' · seeded · ' + nameScore() + '% match');
+    return true;
+  }
+  if (k === 'kra'){
+    const found = st.out === 'krafound';
+    st.kra = { found, agency:found ? 'CVL KRA' : null, date:found ? '18 Mar 2023' : null };
+    net({ a:API.kra, ref:ref('KRA'), body:kraReq(), http:200, res:kraRes(), ms:msr(550, 1150),
+      txt:found ? '200 · KYC_REGISTERED · CVL KRA' : '200 · not registered',
+      sum:found ? 'An existing KRA record means no documents are needed — DigiLocker is skipped entirely'
+                : 'No KRA record, so the customer is sent to DigiLocker. This is the branch that decides the journey length.' });
+    opState('kra', found ? 'ok' : 'miss', found ? 'CVL KRA · registered 18 Mar 2023' : 'No record · documents needed');
+    return true;
+  }
+  return true;
+}
 
-const submitPrefill = guard(async () => {
-  st.touched.pan = st.touched.dob = st.touched.name = true;
-  const e = {};
-  if (!/^[A-Z]{5}\d{4}[A-Z]$/.test(st.form.pan)) e.pan = 'Enter a 10-character PAN, e.g. ABCDE1234F.';
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(st.form.dob)) e.dob = 'Enter the date of birth as YYYY-MM-DD.';
-  if (normName(st.form.name).length < 3) e.name = 'Enter your full name as it appears on your PAN.';
-  st.errs = e; if (Object.keys(e).length){ render(); return; }
-  st.busy = true; render();
-  await sl(msr(200, 400)); st.busy = false;
-  go('panproc'); runPan();
-});
+/* the one decision the background chain makes */
+function decide(){
+  const found = st.kra && st.kra.found;
+  st.decision = found ? 'skip' : 'digilocker';
+  log('APP', found ? 'KRA record found → <b>document collection skipped</b>' : 'No KRA record → <b>DigiLocker</b>');
+  renderBackstage();
+  go(found ? 'kraok' : 'dlintro');
+}
 
-const runPan = guard(async () => {
-  st.pan = panRecord();
-  await sl(msr(800, 1500));
-  const r = st.pan, bad = !panOk(r);
-  net({ a:API.pan, ref:ref('PAN'), body:panReq(), http:bad && r.status === 'NOT_FOUND' ? 422 : 200, res:panRes(), ms:msr(700, 1400),
-    txt:r.status === 'NOT_FOUND' ? '422 · pan_not_found' : '200 · ' + r.status.toLowerCase() + ' · seeding ' + (r.seeded ? 'LINKED' : 'NOT_LINKED'),
-    sum:'Name on PAN, category, DOB, father’s name, Aadhaar seeding status and name match — one response, one price' });
-  if (r.status !== 'NOT_FOUND') cb('kyc.pan.verified', { reference_id:ref('PAN'), pan:r.pan, status:r.status, name_match:nameScore(), aadhaar_seeding_status:r.seeded ? 'LINKED' : 'NOT_LINKED', timestamp:istISO() });
-  if (r.status === 'NOT_FOUND'){ st.blockReason = 'invalidpan'; go('blocked'); return; }
-  if (r.status === 'INOPERATIVE'){ st.blockReason = 'inoperative'; go('blocked'); return; }
-  if (!r.seeded){ st.blockReason = 'notseeded'; go('blocked'); return; }
-  go('checks');
+/* manual PAN is the only fallback that puts a field in front of the customer */
+const submitManualPan = guard(async () => {
+  st.touched.pan = true;
+  if (!/^[A-Z]{5}\d{4}[A-Z]$/.test(st.form.pan)){ st.errs.pan = 'Enter a 10-character PAN, e.g. ABCDE1234F.'; render(); return; }
+  st.errs = {}; st.busy = true; render();
+  if (!st.form.name) st.form.name = P.name;
+  if (!st.form.dob) st.form.dob = P.dob;
+  await sl(msr(200, 420)); st.busy = false;
+  if (st.out === 'pullmiss') st.out = 'clean', buildOutcomes();
+  opState('pull', 'manual', 'Typed by the customer');
+  go('bg'); runChain('panVal');
 });
 
 const toDigiLocker = () => go('dlintro');
+const fromKraOk = () => go('review');
 
+/* ---------- step 3 · DigiLocker ---------- */
 const startDl = guard(async () => {
   if (!st.dlConsent){ st.errs.dlConsent = 'Please allow the fetch to continue.'; render(); return; }
   st.errs = {}; st.busy = true; render();
@@ -1316,7 +1484,8 @@ const startDl = guard(async () => {
     res:down ? envl(hex32(),'FAILURE','provider_unavailable',null,'DigiLocker gateway did not respond')
              : envl(hex32(),'SUCCESS','session_created',{ session_id:'dlsess_' + hex32().slice(0,16).toLowerCase(), auth_mode:'MOBILE_OTP', mobile:maskMobile(st.form.mobile), documents_requested:cfg.docs }),
     ms:msr(500, 1100), txt:down ? '503 · gateway unavailable' : '200 · session created',
-    sum:down ? 'MeitY gateway down — verified PAN is already banked, so the customer resumes at step 5' : 'Mobile-based DigiLocker auth on the number from step 1 — nothing retyped' });
+    sum:down ? 'MeitY gateway down — the whole background chain is already banked, so nothing re-runs on resume'
+             : 'Mobile-based DigiLocker auth on the number from step 1 — nothing retyped' });
   st.busy = false;
   if (down){ st.blockReason = 'dldown'; go('dlalt'); return; }
   await splash('DigiLocker', 'Handing over to DigiLocker. ' + effTheme().pr.partner + ' never sees your DigiLocker credentials.', 1500);
@@ -1324,7 +1493,7 @@ const startDl = guard(async () => {
     net({ a:API.dlOtp, ref:ref('DL'), path:'/kyc/digilocker/consent', body:{ reference_id:ref('DL'), session_id:'dlsess_…' }, http:200,
       res:envl(hex32(),'FAILURE','consent_declined',{ declined_at:istISO() },'Customer declined the DigiLocker consent'),
       ms:msr(300, 700), txt:'200 · consent_declined',
-      sum:'Declined on DigiLocker\u2019s own consent screen — we only ever receive the verdict' });
+      sum:'Declined on DigiLocker’s own consent screen — we only ever receive the verdict' });
     st.blockReason = 'dldeny';
     cb('onboarding.step_failed', { reference_id:ref('DL'), step:'DIGILOCKER', status:'CONSENT_DECLINED', timestamp:istISO() }, 'wn');
     go('dlalt'); return;
@@ -1384,6 +1553,7 @@ const runFetch = guard(async () => {
 });
 
 const runOcr = guard(async () => {
+  opState('ocr', 'run');
   await sl(msr(900, 1600));
   st.ocrName = P.name.toUpperCase();
   const vsTyped = sim(st.form.name, st.ocrName);
@@ -1391,21 +1561,23 @@ const runOcr = guard(async () => {
   st.ocrScore = vsTyped;
   net({ a:API.ocr, ref:ref('OCR'), body:ocrReq(), http:200,
     res:envl(hex32(),'SUCCESS','extraction_complete',{ extracted:{ name:st.ocrName, date_of_birth:P.dob }, confidence:0.97,
-      name_match:{ against_input:vsTyped, against_pan:vsPan, result:vsTyped >= cfg.threshold ? 'MATCH' : 'NO_MATCH' } }),
-    ms:msr(800, 1500), txt:'200 · name extracted · ' + vsTyped + '% vs input',
-    sum:'Name read off the issued Aadhaar document and matched against both the typed name and PAN' });
+      name_match:{ against_profile:vsTyped, against_pan:vsPan, result:vsTyped >= cfg.threshold ? 'MATCH' : 'NO_MATCH' } }),
+    ms:msr(800, 1500), txt:'200 · name extracted · ' + vsTyped + '% vs profile',
+    sum:'Name read off the issued Aadhaar and matched against the pulled profile and PAN — no question to the customer' });
   const resolved = vsTyped >= cfg.threshold && st.out !== 'ocrfail';
+  opState('ocr', resolved ? 'ok' : 'fail', st.ocrName + ' · ' + vsTyped + '%');
   if (!resolved){
     st.reviewRef = ref('REV');
     cb('onboarding.manual_review_required', { reference_id:st.reviewRef, reason:'NAME_MISMATCH_UNRESOLVED',
-      name_input:st.form.name, name_as_per_pan:st.pan.name, name_as_per_aadhaar:st.ocrName,
-      scores:{ input_vs_pan:nameScore(), input_vs_aadhaar:vsTyped, aadhaar_vs_pan:vsPan }, timestamp:istISO() }, 'wn');
+      name_in_profile:st.form.name, name_as_per_pan:st.pan.name, name_as_per_aadhaar:st.ocrName,
+      scores:{ profile_vs_pan:nameScore(), profile_vs_aadhaar:vsTyped, aadhaar_vs_pan:vsPan }, timestamp:istISO() }, 'wn');
     go('manualreview'); return;
   }
-  log('APP', 'Name settled from Aadhaar · <b>' + vsTyped + '%</b> against what the customer typed');
+  log('APP', 'Name settled from Aadhaar · <b>' + vsTyped + '%</b> — the customer was never asked');
   go('review');
 });
 
+/* ---------- step 4 · review and sign ---------- */
 const submitReview = guard(async () => {
   if (!st.finalConsent){ st.errs.finalConsent = 'Please confirm the declaration to submit.'; render(); return; }
   st.errs = {}; st.busy = true; render();
@@ -1415,7 +1587,8 @@ const submitReview = guard(async () => {
     res:envl(hex32(),'SUCCESS','account_created',{ client_id:P.clientId, dp_id:P.dpId, bo_id:P.boId, status:'ACTIVE', activated_at:istISO() }),
     ms:msr(650, 1250), txt:'201 · account created', sum:'Client ID ' + P.clientId + ' · DP ' + P.dpId });
   cb('onboarding.status_updated', { reference_id:ref('ACC'), status:'COMPLETED', client_id:P.clientId, dp_id:P.dpId,
-    kyc_mode:'DIGILOCKER', name_match_score:nameScore(), steps_completed:JOURNEYS[st.j].steps, timestamp:istISO() });
+    kyc_mode:st.kra && st.kra.found ? 'KRA' : 'DIGILOCKER', name_match_score:nameScore(),
+    screens_shown:st.seen.size, timestamp:istISO() });
   st.busy = false; st.finishedAt = Date.now(); st.ended = true;
   go('done');
 });
@@ -1450,9 +1623,9 @@ function render(){
   /* and the closed sheet keeps its last screen in the DOM — park that too */
   $('#sdk').toggleAttribute('inert', !st.sdkOpen);
   if (st.sdkOpen){ renderHead(T); renderRail(); $('#sbody').innerHTML = screenBody(T); bindBody(); }
-  renderFlow(); renderCaption();
+  renderFlow(); renderCaption(); renderBackstage();
   $('#sfoot').hidden = ['dlotp','dlpin'].includes(st.screen);
-  $('#btnFill').hidden = !(st.screen === 'prefill' && !st.pulled);
+  $('#btnFill').hidden = st.screen !== 'manualpan';
   $('#btnBack').disabled = !st.sdkOpen;
   paintBars();
 }
@@ -1482,7 +1655,7 @@ function renderHost(T){
 }
 
 /* ---------- journey chrome ---------- */
-const BACKABLE = { mobile:null, otp:'mobile', pull:null, prefill:null, panproc:null, checks:null, dlintro:'checks', dlotp:'dlintro', dlpin:'dlotp', review:null };
+const BACKABLE = { mobile:null, otp:'mobile', email:null, eotp:'email', bg:null, manualpan:null, dlintro:null, dlotp:'dlintro', dlpin:'dlotp', kraok:null, review:null };
 function renderHead(T){
   const sc = SCREENS[st.screen] || {};
   const gov = ['dlotp','dlpin'].includes(st.screen);
@@ -1490,12 +1663,12 @@ function renderHead(T){
   $('#shead').innerHTML =
     (back ? '<button class="s-x s-bk" id="sback" type="button" aria-label="Back"' + dc('Button (ghost)') + '>' + svg('chev',19).replace('<svg','<svg style="transform:rotate(180deg)"') + '</button>'
           : '<span class="s-logo">' + (gov ? 'DL' : T.pr.mono) + '</span>') +
-    '<span class="ht"><b>' + esc(gov ? 'DigiLocker' : T.pr.header) + '</b><small>' + esc(gov ? 'Government of India · MeitY' : 'Step ' + stepOf(st.screen) + ' of 6 · ' + (STEPS[stepOf(st.screen)-1] || {}).k) + '</small></span>' +
+    '<span class="ht"><b>' + esc(gov ? 'DigiLocker' : T.pr.header) + '</b><small>' + esc(gov ? 'Government of India · MeitY' : 'Step ' + stepOf(st.screen) + ' of ' + STEPS.length + ' \u00b7 ' + (STEPS[stepOf(st.screen)-1] || {}).k) + '</small></span>' +
     '<button class="s-x" id="sclose" type="button" aria-label="Close"' + dc('Button (ghost)') + '>' + svg('x',19) + '</button>';
 }
 function renderRail(){
   const n = stepOf(st.screen), bad = ['blocked','locked','manualreview','dlalt','expired'].includes(st.screen);
-  $('#srail').innerHTML = '<div class="s-rail"' + dc('Progress') + '><span class="rl"><i style="width:' + Math.round(n/6*100) + '%' + (bad ? ';background:var(--s-warn)' : '') + '"></i></span><span class="rt">' + n + ' / 6</span></div>';
+  $('#srail').innerHTML = '<div class="s-rail"' + dc('Progress') + '><span class="rl"><i style="width:' + Math.round(n/STEPS.length*100) + '%' + (bad ? ';background:var(--s-warn)' : '') + '"></i></span><span class="rt">' + n + ' / ' + STEPS.length + '</span></div>';
 }
 
 /* ---------- shared bits ---------- */
@@ -1536,18 +1709,17 @@ function screenBody(T){
   const S = {
   mobile: () =>
     '<h2 class="s-title"' + dc('Heading', 'mobile.title') + '>Let’s start with your mobile number</h2>' +
-    '<p class="s-sub">Use the number linked to your Aadhaar. We reuse it for DigiLocker later, so you type it once.</p>' +
+    '<p class="s-sub">Use the number linked to your Aadhaar. We reuse it later for DigiLocker, so you type it once.</p>' +
     field('mobile', 'Mobile number', { tel:true, im:'numeric', ac:'tel', max:10, ph:'98765 43210' }) +
-    check('consent', 'I allow ' + esc(T.pr.partner) + ' and its KYC partner to verify my PAN, fetch my documents from DigiLocker and check my Aadhaar linkage for opening this account.') +
-    note('', 'Nothing is pulled before you accept. The consent timestamp is stored with every request.') +
+    check('consent', 'I allow ' + esc(T.pr.partner) + ' and its KYC partner to fetch and verify my PAN, check my KYC status and fetch my documents from DigiLocker for opening this account.') +
+    note('', 'This one consent covers every check that runs after it. Nothing is pulled before you accept.') +
     '<div class="s-act">' + btn('go1', 'Send OTP', { busy:st.busy, dis:st.busy, k:'cta.send_otp' }) + '</div>',
 
   otp: () =>
     '<h2 class="s-title">Enter the 6-digit code</h2>' +
     '<p class="s-sub">Sent to ' + esc(maskMobile(st.form.mobile)) + '</p>' +
     (st.autofilled ? '<span class="s-auto">' + svg('spark',12) + 'Read from your SMS automatically</span>' : '') +
-    otpBoxes('otp', st.otp, st.errs.otp) +
-    timerRow(st.otpLeft) +
+    otpBoxes('otp', st.otp, st.errs.otp) + timerRow(st.otpLeft) +
     '<div class="s-act">' + btn('go2', 'Verify', { busy:st.busy, dis:st.busy || st.otp.length !== 6, k:'cta.verify' }) + '</div>',
 
   expired: () =>
@@ -1558,81 +1730,74 @@ function screenBody(T){
     '</div>' +
     '<div class="s-act">' + btn('goResend', 'Send a new OTP') + btn('goEditMobile', 'Change the number', { sec:true }) + '</div>',
 
-  pull: () =>
+  email: () =>
+    '<h2 class="s-title">And your email address</h2>' +
+    '<p class="s-sub">Contract notes and statements go here. It is the last thing you type.</p>' +
+    field('email', 'Email address', { im:'email', ac:'email', ph:'name@example.com' }) +
+    note('', 'After this we take over. Your PAN and KYC status are fetched and checked without asking you for them.') +
+    '<div class="s-act">' + btn('goEm1', 'Send OTP', { busy:st.busy, dis:st.busy, k:'cta.send_email_otp' }) + '</div>',
+
+  eotp: () =>
+    '<h2 class="s-title">Check your inbox</h2>' +
+    '<p class="s-sub">We sent a 6-digit code to ' + esc(st.form.email || '') + '</p>' +
+    otpBoxes('emOtp', st.emOtp, st.errs.emOtp) + timerRow(st.emLeft) +
+    '<div class="s-act">' + btn('goEm2', 'Verify', { busy:st.busy, dis:st.busy || st.emOtp.length !== 6 }) + '</div>',
+
+  /* The customer sees a loader. Screen 2 is where the four calls are actually visible. */
+  bg: () =>
     '<div class="st mid" style="--tone:var(--s-p)">' +
       '<span class="spinner"></span>' +
-      '<h2 class="st-t" style="margin-top:20px">Looking up your profile</h2>' +
-      '<p class="st-d">Customer Data Pull against ' + esc(maskMobile(st.form.mobile)) + '. One call, and the next screen is mostly filled in.</p>' +
+      '<h2 class="st-t" style="margin-top:20px">Setting up your application</h2>' +
+      '<p class="st-d">This takes a few seconds. You do not need to do anything.</p>' +
     '</div>',
 
-  prefill: () => {
-    const pre = st.prefilled, ed = cfg.prefillEditable;
-    return (st.pulled
-      ? '<h2 class="s-title">We found your details</h2><p class="s-sub">Check them and change anything that is wrong. This is the only form in the journey.</p>'
-      : '<h2 class="s-title">Tell us your details</h2><p class="s-sub">We could not find a profile for this number, so these three fields are yours to fill in.</p>') +
-    (st.pulled ? '' : note('wn', 'Customer Data Pull returned <b>no_record_found</b>. Everything downstream still runs — the customer just types more.')) +
-    field('pan', 'PAN', { caps:true, max:10, ph:'ABCDE1234F', src:pre.pan ? 'pull' : 'you', srcLabel:pre.pan ? 'From Data Pull' : 'You type this', lock:pre.pan && !ed }) +
-    field('dob', 'Date of birth', { im:'numeric', ph:'YYYY-MM-DD', src:pre.dob ? 'pull' : 'you', srcLabel:pre.dob ? 'From Data Pull' : 'You type this', lock:pre.dob && !ed, hint:st.errs.dob ? '' : 'As recorded against your PAN' }) +
-    field('name', 'Full name', { ac:'name', ph:'As printed on your PAN', src:pre.name ? 'pull' : 'you', srcLabel:pre.name ? 'From Data Pull' : 'You type this' }) +
-    '<div class="s-act">' + btn('go3', 'Verify my PAN', { busy:st.busy, dis:st.busy, k:'cta.verify_pan' }) + '</div>';
-  },
-
-  panproc: () =>
-    '<div class="st mid" style="--tone:var(--s-p)">' +
-      '<span class="spinner"></span>' +
-      '<h2 class="st-t" style="margin-top:20px">Verifying your PAN</h2>' +
-      '<p class="st-d">Checking the PAN against Income Tax Department records, along with its Aadhaar linkage and the name on file.</p>' +
-    '</div>',
-
-  checks: () => {
-    const r = st.pan, sc = nameScore(), low = sc < cfg.threshold;
-    return '<h2 class="s-title">PAN verified</h2>' +
-    '<p class="s-sub">Everything below came back in a single Detailed PAN response.</p>' +
-    '<div class="rec"' + dc('Card (record)') + '>' +
-      '<div class="rec-h">' + svg('card',17) + '<b>INCOME TAX DEPARTMENT</b><span class="pill2 ' + (panOk(r) ? 'ok' : 'bad') + '">' + (panOk(r) ? 'Valid' : r.status.replace(/_/g,' ').toLowerCase()) + '</span></div>' +
-      '<div class="rec-b">' +
-        recRow('PAN', '<span class="mono">' + esc(r.pan) + '</span>') +
-        recRow('Name on PAN', esc(r.name)) +
-        recRow('Date of birth', esc(r.dob)) +
-        recRow('Father’s name', esc(r.father)) +
-        recRow('Category', esc(r.category)) +
-        recRow('Aadhaar linkage', r.seeded ? svg('check',13) + ' Linked' : svg('x',13) + ' Not linked', r.seeded ? 'ok' : 'bad') +
-        recRow('Last updated', esc(r.updated)) +
-      '</div>' +
-      meter(sc, 'Name match against PAN', low
-        ? 'Below your ' + cfg.threshold + '% threshold. The next step reads the name off your Aadhaar and settles it.'
-        : 'At or above your ' + cfg.threshold + '% threshold, so no document check is needed for the name.') +
-    '</div>' +
-    (low ? note('wn', 'PAN reads <b>' + esc(r.name) + '</b> against <b>' + esc(st.form.name) + '</b>. DigiLocker will decide this, not a reviewer.') : '') +
-    '<div class="s-act">' + btn('go4', 'Continue to DigiLocker', { k:'cta.continue_digilocker' }) + '</div>';
-  },
+  manualpan: () =>
+    '<h2 class="s-title">We need your PAN</h2>' +
+    '<p class="s-sub">We could not find a profile against your number, so this is the one detail we have to ask for.</p>' +
+    field('pan', 'PAN', { caps:true, max:10, ph:'ABCDE1234F', src:'you', srcLabel:'You type this' }) +
+    note('wn', 'Customer Data Pull returned <b>no_record_found</b>. Everything after this still runs in the background — only this field moved to the customer.') +
+    '<div class="s-act">' + btn('goPan', 'Continue', { busy:st.busy, dis:st.busy, k:'cta.continue' }) + '</div>',
 
   blocked: () => {
     const why = st.blockReason;
     const M = {
       notseeded:{ t:'Your PAN is not linked to Aadhaar', d:'SEBI needs a PAN seeded with Aadhaar before a demat account can be opened. Link it on the Income Tax portal and come back — your progress is saved.',
-        rows:[['bad','PAN–Aadhaar seeding','ITD reports NOT_LINKED','Blocked'],['ok','PAN validity','Valid and active','Passed'],['nr','DigiLocker','Not attempted','Skipped']],
-        cta:'How to link PAN with Aadhaar', foot:'Caught at step 3 from the response you were already paying for — not after the customer finished DigiLocker.' },
+        rows:[['bad','PAN–Aadhaar seeding','ITD reports NOT_LINKED','Blocked'],['ok','PAN validity','Valid and active','Passed'],['nr','KRA and documents','Not attempted','Skipped']],
+        cta:'How to link PAN with Aadhaar', foot:'Caught in the background chain before the customer reached the DigiLocker page — one of the few times the silent path has to surface something.' },
       inoperative:{ t:'Your PAN is inoperative', d:'The Income Tax Department has marked this PAN inoperative, usually for non-linkage with Aadhaar. It has to be made operative before the account can open.',
-        rows:[['bad','PAN status','ITD reports INOPERATIVE','Blocked'],['bad','PAN–Aadhaar seeding','NOT_LINKED','Blocked'],['nr','DigiLocker','Not attempted','Skipped']],
-        cta:'How to reactivate my PAN', foot:'Returned in <code>status</code> on the Detailed PAN response.' },
-      invalidpan:{ t:'We could not find that PAN', d:'The Income Tax Department has no record of this number. Check each character and try again — a single wrong letter is the usual cause.',
-        rows:[['bad','PAN lookup','ITD returned NOT_FOUND','Failed'],['nr','PAN–Aadhaar seeding','Not checked','Skipped'],['nr','DigiLocker','Not attempted','Skipped']],
-        cta:'Correct my PAN', foot:'A retry re-runs the call with the next reference ID; the failed one stays in the audit trail.' }
+        rows:[['bad','PAN status','ITD reports INOPERATIVE','Blocked'],['bad','PAN–Aadhaar seeding','NOT_LINKED','Blocked'],['nr','KRA and documents','Not attempted','Skipped']],
+        cta:'How to reactivate my PAN', foot:'Returned in <code>status</code> on the PAN validation response, before any document work.' },
+      invalidpan:{ t:'We could not verify that PAN', d:'The Income Tax Department has no record of this number. Check each character and try again — a single wrong letter is the usual cause.',
+        rows:[['bad','PAN validation','NSDL returned NOT_FOUND','Failed'],['nr','Detailed PAN','Not checked','Skipped'],['nr','KRA and documents','Not attempted','Skipped']],
+        cta:'Enter my PAN again', foot:'A retry re-runs the chain from PAN validation with the next reference ID; the failed one stays in the audit trail.' }
     }[why];
     return '<div class="st" style="--tone:var(--s-err)">' +
       '<span class="st-em pop">' + svg(why === 'invalidpan' ? 'help' : 'alert',28) + '</span>' +
       '<h2 class="st-t">' + esc(M.t) + '</h2><p class="st-d">' + esc(M.d) + '</p>' +
-      '<div class="st-card"><div class="st-h">What we checked</div><ul class="st-rows">' +
+      '<div class="st-card"><div class="st-h">What ran in the background</div><ul class="st-rows">' +
         M.rows.map(r => stRow(r[0], r[1], r[2], r[3])).join('') +
       '</ul><div class="st-foot">' + svg('info',15) + '<span>' + M.foot + '</span></div></div>' +
     '</div>' +
-    '<div class="s-act">' + btn('goFix', M.cta) + btn('goBackPan', 'Go back', { sec:true }) + '</div>';
+    '<div class="s-act">' + btn('goFix', M.cta) + btn('goRestart', 'Start over', { sec:true }) + '</div>';
   },
+
+  kraok: () =>
+    '<div class="st" style="--tone:var(--s-ok)">' +
+      '<span class="st-em pop">' + svg('shield',28) + '</span>' +
+      '<span class="st-badge"><i></i>KYC on file</span>' +
+      '<h2 class="st-t">You are already KYC-verified</h2>' +
+      '<p class="st-d">' + esc(st.kra && st.kra.agency || 'A KRA') + ' already holds your KYC record, so there are no documents to collect.</p>' +
+      '<div class="st-card"><div class="st-h">What this skips</div><ul class="st-rows">' +
+        stRow('ok', 'KRA record', (st.kra && st.kra.agency || '') + ' · registered ' + (st.kra && st.kra.date || ''), 'Found') +
+        stRow('nr', 'DigiLocker', 'Not needed', 'Skipped') +
+        stRow('nr', 'Document upload', 'Not needed', 'Skipped') +
+      '</ul><div class="st-foot">' + svg('info',15) + '<span>The KRA check is one call in the background chain. When it hits, the journey is three screens end to end.</span></div></div>' +
+    '</div>' +
+    '<div class="s-act">' + btn('goKra', 'Continue') + '</div>',
 
   dlintro: () =>
     '<h2 class="s-title">Fetch your documents from DigiLocker</h2>' +
-    '<p class="s-sub">DigiLocker hands over government-issued copies, signed by the issuer. Nothing to scan, nothing to upload.</p>' +
+    '<p class="s-sub">You are not KYC-registered yet, so we need government copies of your Aadhaar and PAN. Nothing to scan, nothing to upload.</p>' +
     '<div class="docs">' +
       (cfg.docs.includes('AADHAAR') ? '<div class="doc wait"' + dc('Document row') + '><span class="dic">' + svg('shield',18) + '</span><span class="dt"><b>Aadhaar</b><small>Issued XML from UIDAI · identity and address</small></span><span class="ds">' + svg('clock',12) + '</span></div>' : '') +
       (cfg.docs.includes('PAN') ? '<div class="doc wait"' + dc('Document row') + '><span class="dic">' + svg('card',18) + '</span><span class="dt"><b>PAN</b><small>Issued copy from the Income Tax Department</small></span><span class="ds">' + svg('clock',12) + '</span></div>' : '') +
@@ -1644,8 +1809,7 @@ function screenBody(T){
   dlotp: () =>
     '<h2 class="s-title">Sign in to DigiLocker</h2>' +
     '<p class="s-sub">Enter the OTP DigiLocker sent to ' + esc(maskMobile(st.form.mobile)) + '</p>' +
-    otpBoxes('dlOtp', st.dlOtp, st.errs.dlOtp) +
-    timerRow(st.dlLeft) +
+    otpBoxes('dlOtp', st.dlOtp, st.errs.dlOtp) + timerRow(st.dlLeft) +
     note('', 'This screen belongs to DigiLocker. ' + esc(T.pr.partner) + ' receives only the documents you approve.') +
     '<div class="s-act">' + btn('go6', 'Verify', { busy:st.busy, dis:st.busy || st.dlOtp.length !== 6 }) + '</div>',
 
@@ -1657,8 +1821,8 @@ function screenBody(T){
     '<div class="s-act">' + btn('go7', 'Continue', { busy:st.busy, dis:st.busy }) + '</div>',
 
   dlfetch: () => {
-    const row = (k, label, sub, ic) => { const s = st.docs[k];
-      return '<div class="doc ' + s + '"' + dc('Document row') + '><span class="dic">' + svg(ic,18) + '</span><span class="dt"><b>' + label + '</b><small>' + (s === 'ok' ? 'Fetched · signature valid' : s === 'load' ? 'Fetching from the locker…' : sub) + '</small></span><span class="ds">' + (s === 'ok' ? svg('check',12) : s === 'load' ? '' : svg('clock',12)) + '</span></div>'; };
+    const row = (k, label, sub, ic) => { const v = st.docs[k];
+      return '<div class="doc ' + v + '"' + dc('Document row') + '><span class="dic">' + svg(ic,18) + '</span><span class="dt"><b>' + label + '</b><small>' + (v === 'ok' ? 'Fetched · signature valid' : v === 'load' ? 'Fetching from the locker…' : sub) + '</small></span><span class="ds">' + (v === 'ok' ? svg('check',12) : v === 'load' ? '' : svg('clock',12)) + '</span></div>'; };
     return '<h2 class="s-title">Getting your documents</h2>' +
     '<p class="s-sub">Pulled straight from DigiLocker with the issuer’s signature intact.</p>' +
     '<div class="docs">' +
@@ -1670,21 +1834,21 @@ function screenBody(T){
 
   ocr: () => {
     const sc = st.ocrScore;
-    return '<h2 class="s-title">Settling your name</h2>' +
-    '<p class="s-sub">PAN and what you typed did not match closely enough, so we read the name off your Aadhaar.</p>' +
-    (sc === null ? '<div class="st mid" style="--tone:var(--s-p)"><span class="spinner"></span><p class="st-d" style="margin-top:18px">Extracting the name from your issued Aadhaar document…</p></div>'
-    : '<div class="ocr"' + dc('Card (OCR)') + '>' +
-        '<div class="ocr-im"><span class="bq">OCR</span><div class="l1">GOVERNMENT OF INDIA</div><div class="l2">' + esc(st.ocrName) + '</div><div class="l3">DOB: ' + esc(P.dobShown) + ' &nbsp;·&nbsp; ' + esc(P.aadhaarMasked) + '</div></div>' +
-        '<div class="ocr-b">Extracted from the issued Aadhaar document at <b>97%</b> confidence and matched against both the name you typed and the name on PAN.</div>' +
-      '</div>' +
-      '<div class="rec">' +
-        '<div class="rec-b">' +
-          recRow('You typed', esc(st.form.name)) +
+    return '<h2 class="s-title">Almost there</h2>' +
+    '<p class="s-sub">Checking the name on your documents. You do not need to do anything.</p>' +
+    (sc === null || sc === undefined
+      ? '<div class="st mid" style="--tone:var(--s-p)"><span class="spinner"></span><p class="st-d" style="margin-top:18px">Reading the name from your issued Aadhaar…</p></div>'
+      : '<div class="ocr"' + dc('Card (OCR)') + '>' +
+          '<div class="ocr-im"><span class="bq">OCR</span><div class="l1">GOVERNMENT OF INDIA</div><div class="l2">' + esc(st.ocrName) + '</div><div class="l3">DOB: ' + esc(P.dobShown) + ' &nbsp;·&nbsp; ' + esc(P.aadhaarMasked) + '</div></div>' +
+          '<div class="ocr-b">Extracted at <b>97%</b> confidence and matched against the pulled profile and the name on PAN — without a question to the customer.</div>' +
+        '</div>' +
+        '<div class="rec"><div class="rec-b">' +
+          recRow('Pulled profile', esc(st.form.name)) +
           recRow('Name on Aadhaar', esc(st.ocrName)) +
           recRow('Name on PAN', esc(st.pan.name)) +
         '</div>' +
-        meter(sc, 'Aadhaar name vs what you typed', sc >= cfg.threshold ? 'Above your ' + cfg.threshold + '% threshold — the name is settled and no reviewer is involved.' : 'Still below your ' + cfg.threshold + '% threshold.') +
-      '</div>');
+        meter(sc, 'Aadhaar name vs pulled profile', sc >= cfg.threshold ? 'Above your ' + cfg.threshold + '% threshold — settled, no reviewer involved.' : 'Still below your ' + cfg.threshold + '% threshold.') +
+        '</div>');
   },
 
   dlalt: () => {
@@ -1694,12 +1858,12 @@ function screenBody(T){
       '<h2 class="st-t">' + (deny ? 'Upload your documents instead' : 'DigiLocker is not responding') + '</h2>' +
       '<p class="st-d">' + (deny
         ? 'No problem. Upload clear photos of your Aadhaar and PAN and we will verify them the slower way — expect a review within one working day.'
-        : 'The DigiLocker gateway is down at MeitY’s end. Your verified PAN is already saved, so you can retry in a few minutes or upload instead.') + '</p>' +
-      '<div class="st-card"><div class="st-h">Where you are</div><ul class="st-rows">' +
-        stRow('ok', 'Mobile verified', maskMobile(st.form.mobile), 'Saved') +
-        stRow('ok', 'PAN verified', st.pan ? st.pan.name : '—', 'Saved') +
+        : 'The DigiLocker gateway is down at MeitY’s end. Everything else is already verified, so you can retry in a few minutes or upload instead.') + '</p>' +
+      '<div class="st-card"><div class="st-h">Already done, and held</div><ul class="st-rows">' +
+        stRow('ok', 'Mobile and email', maskMobile(st.form.mobile), 'Verified') +
+        stRow('ok', 'PAN and Aadhaar seeding', st.pan ? st.pan.name : '—', 'Verified') +
         stRow(deny ? 'wn' : 'bad', 'DigiLocker', deny ? 'Consent declined' : 'Gateway returned 503', deny ? 'Declined' : 'Unavailable') +
-      '</ul><div class="st-foot">' + svg('info',15) + '<span>Nothing verified is thrown away. Resuming picks up at step 5, not step 1.</span></div></div>' +
+      '</ul><div class="st-foot">' + svg('info',15) + '<span>The whole background chain is banked. Resuming re-runs none of it.</span></div></div>' +
     '</div>' +
     '<div class="s-act">' + (deny ? '' : btn('goRetryDl', 'Try DigiLocker again')) + btn('goUpload', 'Upload documents', { sec:!deny }) + '</div>';
   },
@@ -1709,9 +1873,9 @@ function screenBody(T){
       '<span class="st-em pop">' + svg('lock',28) + '</span>' +
       '<h2 class="st-t">DigiLocker has locked this attempt</h2>' +
       '<p class="st-d">Three OTPs in a row did not match, so UIDAI has closed the session. Try again after a short wait, or upload your documents instead.</p>' +
-      '<div class="st-card"><div class="st-h">Where you are</div><ul class="st-rows">' +
-        stRow('ok', 'Mobile verified', maskMobile(st.form.mobile), 'Saved') +
-        stRow('ok', 'PAN verified', st.pan ? st.pan.name : '—', 'Saved') +
+      '<div class="st-card"><div class="st-h">Already done, and held</div><ul class="st-rows">' +
+        stRow('ok', 'Mobile and email', maskMobile(st.form.mobile), 'Verified') +
+        stRow('ok', 'PAN and Aadhaar seeding', st.pan ? st.pan.name : '—', 'Verified') +
         stRow('bad', 'DigiLocker session', '3 of 3 attempts used', 'Locked') +
       '</ul><div class="st-foot">' + svg('info',15) + '<span>We hold your progress for 7 days against <code>' + esc(ref('DL')) + '</code>.</span></div></div>' +
     '</div>' +
@@ -1723,23 +1887,24 @@ function screenBody(T){
       '<span class="st-badge"><i></i>Under review</span>' +
       '<h2 class="st-t">We need a person to check your name</h2>' +
       '<p class="st-d">Your PAN carries initials where Aadhaar carries your full name. Our team confirms this by hand — usually within a few hours.</p>' +
-      '<div class="st-card"><div class="st-h">What the checks found</div><ul class="st-rows">' +
-        stRow('ok', 'Aadhaar vs what you typed', st.ocrName + ' · ' + st.ocrScore + '%', 'Match') +
-        stRow('wn', 'PAN vs what you typed', st.pan.name + ' · ' + nameScore() + '%', 'Partial') +
+      '<div class="st-card"><div class="st-h">What the silent checks found</div><ul class="st-rows">' +
+        stRow('ok', 'Aadhaar vs pulled profile', st.ocrName + ' · ' + st.ocrScore + '%', 'Match') +
+        stRow('wn', 'PAN vs pulled profile', st.pan.name + ' · ' + nameScore() + '%', 'Partial') +
         stRow('wn', 'Aadhaar vs PAN', 'Initials against full name', 'Partial') +
       '</ul>' +
       '<div class="st-kvs">' +
         '<div class="st-kv"><span>Review reference</span><b class="mono">' + esc(st.reviewRef || '—') + '</b></div>' +
         '<div class="st-kv"><span>Raised at</span><b>' + esc(IST()) + '</b></div>' +
       '</div>' +
-      '<div class="st-foot">' + svg('info',15) + '<span>Both records travel with the case, so the reviewer decides in seconds rather than asking the customer again.</span></div></div>' +
+      '<div class="st-foot">' + svg('info',15) + '<span>All three records travel with the case, so the reviewer decides in seconds rather than asking the customer again.</span></div></div>' +
     '</div>' +
     '<div class="s-act">' + btn('goRestart', 'Done for now', { sec:true }) + '</div>',
 
   review: () => {
     const sc = nameScore(), via = st.ocrScore !== null && st.ocrScore !== undefined;
-    return '<h2 class="s-title">One last look</h2>' +
-    '<p class="s-sub">Everything here is verified against a source. Nothing was typed twice.</p>' +
+    const kra = st.kra && st.kra.found;
+    return '<h2 class="s-title">Check and sign</h2>' +
+    '<p class="s-sub">The first time we show you any of this — because you are signing it, not correcting it.</p>' +
     '<div class="rec"' + dc('Card (record)') + '>' +
       '<div class="rec-h">' + svg('shield',17) + '<b>VERIFIED IDENTITY</b><span class="pill2 ok">Ready</span></div>' +
       '<div class="rec-b">' +
@@ -1747,19 +1912,22 @@ function screenBody(T){
         recRow('PAN', '<span class="mono">' + esc(st.form.pan) + '</span>') +
         recRow('Date of birth', esc(P.dobShown)) +
         recRow('Mobile', esc(maskMobile(st.form.mobile))) +
-        recRow('Aadhaar', esc(P.aadhaarMasked)) +
+        recRow('Email', esc(st.form.email || '')) +
+        (kra ? '' : recRow('Aadhaar', esc(P.aadhaarMasked))) +
         recRow('Aadhaar linkage', svg('check',13) + ' Linked', 'ok') +
         recRow('Name match', (via ? st.ocrScore : sc) + '% · ' + (via ? 'from Aadhaar' : 'against PAN'), 'ok') +
-        recRow('KYC mode', 'DigiLocker · issued documents') +
+        recRow('KYC mode', kra ? (st.kra.agency + ' · existing record') : 'DigiLocker · issued documents') +
       '</div>' +
     '</div>' +
+    note('', 'Everything above was fetched and verified while you waited. You typed ' + (st.prefilled.pan ? 'two things' : 'three things') + ': your mobile number' + (st.prefilled.pan ? ' and your email' : ', your email and your PAN') + '.') +
     check('finalConsent', 'The details above are mine and correct. I agree to the account opening terms and the risk disclosure.' + (cfg.esign ? ' I will sign the form with Aadhaar e-Sign.' : '')) +
     '<div class="s-act">' + btn('go8', cfg.esign ? 'e-Sign and open my account' : 'Open my account', { busy:st.busy, dis:st.busy, k:'cta.submit' }) + '</div>';
   },
 
   done: () => {
     const J = JOURNEYS[st.j], secs = Math.max(1, Math.round((st.finishedAt - st.startedAt)/1000));
-    const bar = (lb, n, col) => '<div class="sr"><span>' + lb + '</span><span class="bar"><i style="width:' + Math.round(n/J.today*100) + '%;background:' + col + '"></i></span><b>' + n + '</b></div>';
+    const shown = st.seen.size, typed = st.prefilled.pan ? 2 : 3;
+    const bar = (lb, n, col) => '<div class="sr"><span>' + lb + '</span><span class="bar"><i style="width:' + Math.round(Math.min(n, J.today)/J.today*100) + '%;background:' + col + '"></i></span><b>' + n + '</b></div>';
     return '<div class="st" style="--tone:var(--s-ok)">' +
       '<span class="st-em pop">' + svg('check',28) + '</span>' +
       '<h2 class="st-t">Your account is open</h2>' +
@@ -1771,10 +1939,12 @@ function screenBody(T){
           '<div class="st-kv"><span>BO ID</span><b class="mono">' + P.boId + '</b></div>' +
           '<div class="st-kv"><span>Opened</span><b>' + esc(IST()) + '</b></div>' +
         '</div>' +
-        '<div class="st-foot">' + svg('shield',15) + '<span>KYC held against <code>' + esc(ref('DL')) + '</code> with issued Aadhaar and PAN, signature verified.</span></div>' +
+        '<div class="st-foot">' + svg('shield',15) + '<span>KYC held against <code>' + esc(st.kra && st.kra.found ? ref('KRA') : ref('DL')) + '</code> · ' + (st.kra && st.kra.found ? 'existing ' + esc(st.kra.agency) + ' record' : 'issued Aadhaar and PAN, signature verified') + '.</span></div>' +
       '</div>' +
-      '<div class="save"' + dc('Card (comparison)') + '><div class="sh">Steps to get here</div>' +
-        bar('Before', J.today, 'var(--s-tx2)') + bar('Just now', J.steps, 'var(--s-p)') +
+      '<div class="save"' + dc('Card (comparison)') + '><div class="sh">What the customer actually did</div>' +
+        bar('Steps before', J.today, 'var(--s-tx2)') +
+        bar('Screens just now', shown, 'var(--s-p)') +
+        '<div class="sr"><span>Details typed</span><span></span><b>' + typed + '</b></div>' +
         '<div class="sr"><span>Elapsed</span><span></span><b>' + Math.floor(secs/60) + 'm ' + String(secs%60).padStart(2,'0') + 's</b></div>' +
       '</div>' +
     '</div>' +
@@ -1787,13 +1957,12 @@ function screenBody(T){
 /* ---------- in-phone wiring. Inputs write to state without a re-render so the
      caret and the soft keyboard stay put; validation renders on submit. ---------- */
 const ACT = {
-  go1:submitMobile, go2:submitOtp, go3:submitPrefill, go4:toDigiLocker, go5:startDl, go6:submitDlOtp,
-  go7:() => submitDlPin(), go8:submitReview,
+  go1:submitMobile, go2:submitOtp, goEm1:submitEmail, goEm2:submitEotp, goPan:submitManualPan,
+  goKra:fromKraOk, go5:startDl, go6:submitDlOtp, go7:() => submitDlPin(), go8:submitReview,
   goResend:resendOtp, goEditMobile:() => { clearTimers(); st.otp = ''; st.errs = {}; go('mobile'); },
   goDecline:declineDl, goRetryDl:() => { st.out = 'clean'; buildOutcomes(); st.dlConsent = true; go('dlintro'); startDl(); },
   goUpload:() => toast('Manual upload is out of scope for this prototype'),
-  goFix:() => toast('Opens the ITD linkage page in a browser'),
-  goBackPan:() => { st.errs = {}; go('prefill'); },
+  goFix:() => { if (st.blockReason === 'invalidpan'){ st.errs = {}; st.form.pan = ''; go('manualpan'); return; } toast('Opens the ITD linkage page in a browser'); },
   goRestart:restart, goHome:() => { st.sdkOpen = false; st.screen = 'host'; render(); renderDev(); },
   sclose:() => { if (st.ended){ ACT.goHome(); return; } st.overlay = 'quit'; openDlg(); },
   sback:() => handleBack(),
@@ -1809,7 +1978,7 @@ function bindBody(){
     if (e.target.closest('[data-chk]')) return;   // the checkbox's own change event owns this
     const bt = e.target.closest('button[id]');
     if (bt && ACT[bt.id]){ ACT[bt.id](); return; }
-    if (bt && bt.id === 'resend'){ (st.screen === 'otp' ? resendOtp : startDl)(); }
+    if (bt && bt.id === 'resend'){ ({ otp:resendOtp, eotp:submitEmail, dlotp:startDl }[st.screen] || resendOtp)(); }
   };
   b.oninput = e => {
     const t = e.target;
@@ -1819,7 +1988,7 @@ function bindBody(){
       const ins = Array.from(box.querySelectorAll('input'));
       const name = box.dataset.otp;
       st[name] = ins.map(i => i.value).join('');
-      delete st.errs[name === 'otp' ? 'otp' : 'dlOtp'];
+      delete st.errs[name];
       const i = ins.indexOf(t);
       if (t.value && i < 5) ins[i+1].focus();
       syncPrimary();
@@ -1842,14 +2011,14 @@ function bindBody(){
     }
     if (e.key === 'Enter'){ const p = b.querySelector('.s-act .s-btn.pri:not(.dis)'); if (p) p.click(); }
   };
-  if (st.screen === 'otp' || st.screen === 'dlotp'){
+  if (['otp','eotp','dlotp'].includes(st.screen)){
     const first = b.querySelector('[data-otp] input:not([value]), [data-otp] input[value=""]');
     if (first && !st.busy) first.focus({ preventScroll:true });
   }
 }
 /* keeps the primary button's enabled state honest without re-rendering the screen */
 function syncPrimary(){
-  const need = { otp:() => st.otp.length === 6, dlotp:() => st.dlOtp.length === 6 }[st.screen];
+  const need = { otp:() => st.otp.length === 6, eotp:() => st.emOtp.length === 6, dlotp:() => st.dlOtp.length === 6 }[st.screen];
   if (!need) return;
   const p = $('#sbody .s-act .s-btn.pri');
   if (!p) return;
@@ -1873,6 +2042,42 @@ function handleBack(){
   ACT.sclose();
 }
 
+/* ---------- screen 2 · the background chain, live ---------- */
+function renderBackstage(){
+  const b = $('#backstage'); if (!b) return;
+  const list = OPS.concat(st.ops.ocr ? [{ k:'ocr', t:'OCR · name from Aadhaar', a:API.ocr, why:'Only when the PAN name match is below threshold. Settles the name without asking the customer.' }] : []);
+  const row = o => {
+    const v = st.ops[o.k] || {};
+    const cls = v.s || 'wait';
+    const ic = { ok:'check', miss:'alert', fail:'x', manual:'user', run:'' }[v.s] || 'clock';
+    return '<div class="op ' + cls + '">' +
+      '<span class="od">' + (v.s === 'run' ? '' : svg(ic, 11)) + '</span>' +
+      '<span class="ot"><b>' + esc(o.t) + (o.a.ill ? '<span class="ill">illustrative</span>' : '') + '</b>' +
+        '<code>' + o.a.m + ' ' + esc(o.a.path) + '</code>' +
+        '<span class="why">' + esc(o.why) + '</span>' +
+        (v.detail ? '<span class="det">' + esc(v.detail) + '</span>' : '') +
+      '</span>' +
+      '<span class="ms">' + (v.at != null ? '+' + v.at.toFixed(1) + 's' : '') + '</span>' +
+    '</div>';
+  };
+  let dec = '';
+  if (st.decision === 'skip') dec = '<div class="bs-dec skip"><b>KRA record found — documents skipped</b>The customer goes straight to signing. DigiLocker is never shown.</div>';
+  else if (st.decision === 'digilocker') dec = '<div class="bs-dec go"><b>No KRA record — DigiLocker</b>This is the page Axis plans to show straight after the email OTP.</div>';
+  else if (st.blockReason) dec = '<div class="bs-dec"><b>Chain stopped</b>A check failed, so the customer had to be told. This is the only reason the silent path surfaces.</div>';
+
+  const bgCalls = st.net.filter(e => e.bg).length;
+  b.innerHTML =
+    '<p class="bs-sub">Axis calls these while the customer waits on one loader. Nothing here is put in front of them — if Data Pull and NSDL already agree, there is nothing to reconfirm.</p>' +
+    list.map(row).join('') + dec +
+    '<div class="bs-foot"><span>Background calls <b>' + bgCalls + '</b></span><span>Screens it saved <b>' + (st.decision === 'skip' ? 4 : 2) + '</b></span><span>Fields not asked for <b>' + (st.prefilled.pan ? 3 : 0) + '</b></span></div>';
+}
+function setView(v){
+  st.view = v;
+  document.body.classList.remove('view-cust','view-both','view-back');
+  document.body.classList.add('view-' + v);
+  segSet('#viewSeg', v); fit();
+}
+
 /* ---------- flow bar + caption ---------- */
 function renderFlow(){
   const cur = stepOf(st.screen), bad = ['blocked','locked'].includes(st.screen), wn = ['manualreview','dlalt','expired'].includes(st.screen);
@@ -1885,25 +2090,26 @@ function renderFlow(){
   }).join('');
 }
 const CAPTION = {
-  host:'The partner app before anything starts. Nothing on this screen is ours — the journey is a sheet the app opens.',
-  mobile:'One number, one consent. This is the only thing the customer is asked for before data starts arriving.',
-  otp:'Mobile ownership proved. The same number carries DigiLocker in step 5, so it is never typed twice.',
+  host:'The partner app before anything starts. Nothing on this screen is ours.',
+  mobile:'One number, one consent. That consent covers every background check that follows.',
+  otp:'Mobile ownership proved. The same number carries DigiLocker later, so it is never typed twice.',
   expired:'The OTP window closed. Resend issues a new reference ID and kills the old code.',
-  pull:'Customer Data Pull against the mobile number — one call for PAN, DOB, name, address and alternate contact.',
-  prefill:'The screen that removes three steps. The customer confirms rather than types, and every field says where it came from.',
-  panproc:'Detailed PAN against ITD. Watch what comes back in one response.',
-  checks:'PAN record, Aadhaar seeding status and name match — all from the one call. The seeding check costs nothing extra.',
-  blocked:'A hard stop caught at step 3 rather than after DigiLocker. The customer gets the remedy, not a dead end.',
-  dlintro:'Consent before the government surface takes over. Named documents, named purpose.',
+  email:'The second and last thing the customer types in the happy path.',
+  eotp:'Email proved live before any contract note is sent to it. After this, the customer stops working.',
+  bg:'One loader on the left. Four calls on the right. This is the whole argument — watch screen 2.',
+  manualpan:'The only screen where a PAN is asked for, and only because Data Pull came back empty.',
+  blocked:'A hard stop out of the background chain. Caught before the customer touched DigiLocker.',
+  kraok:'KRA already holds the record, so document collection is skipped entirely. Three screens, start to signed.',
+  dlintro:'The page Axis plans to show straight after the email OTP — and the customer has confirmed nothing to get here.',
   dlotp:'DigiLocker’s own screen, on the number from step 1. Axis never touches the credentials — the differentiator against running your own DigiLocker keys.',
   dlpin:'The DigiLocker PIN step, on for accounts that have one set.',
-  dlfetch:'Issued XML with UIDAI’s signature, not a photo of a card. Nothing to doctor, nothing to review.',
-  ocr:'Name match was below threshold, so OCR reads it off the issued Aadhaar. This is the step that keeps the case out of the review queue.',
-  dlalt:'Everything verified so far is banked. Resuming starts at step 5, not step 1.',
+  dlfetch:'Issued XML with UIDAI’s signature, not a photo of a card.',
+  ocr:'Name match was below threshold, so OCR reads it off the issued Aadhaar — silently. The customer is never asked to retype a name.',
+  dlalt:'The whole background chain is banked. Resuming re-runs none of it.',
   locked:'UIDAI closed the session after three failures. Progress is held for 7 days.',
-  manualreview:'Automation got as far as it honestly could. Both records travel with the case so a reviewer decides in seconds.',
-  review:'Every line here came from a source, not a form.',
-  done:'Six steps instead of twelve, and no document ever left the customer’s phone as an upload.'
+  manualreview:'Automation got as far as it honestly could. All three records travel with the case.',
+  review:'The first time the customer sees any of this — because they are signing it, not correcting it.',
+  done:'Four screens and two fields, against twelve steps today.'
 };
 function renderCaption(){ $('#caption').textContent = st.sdkOpen ? (CAPTION[st.screen] || '') : CAPTION.host; }
 
@@ -2009,7 +2215,8 @@ function renderState(){
     '</table>' +
     '<div class="lbl">Captured fields</div><table>' +
       tr('mobile', st.form.mobile ? '<code>' + st.form.mobile + '</code> <span class="pill ok">verified</span>' : '—') +
-      tr('pan', st.form.pan ? '<code>' + st.form.pan + '</code>' + (st.prefilled.pan ? ' <span class="pill">prefilled</span>' : '') : '—') +
+      tr('email', st.form.email ? '<code>' + esc(st.form.email) + '</code> <span class="pill ok">verified</span>' : '—') +
+      tr('pan', st.form.pan ? '<code>' + st.form.pan + '</code>' + (st.prefilled.pan ? ' <span class="pill">background · never shown</span>' : ' <span class="pill wn">typed by customer</span>') : '—') +
       tr('date_of_birth', st.form.dob ? '<code>' + st.form.dob + '</code>' : '—') +
       tr('name', st.form.name ? esc(st.form.name) : '—') +
     '</table>' +
@@ -2019,10 +2226,17 @@ function renderState(){
       tr('aadhaar_seeding_status', r ? '<span class="pill ' + (r.seeded ? 'ok' : 'bad') + '">' + (r.seeded ? 'LINKED' : 'NOT_LINKED') + '</span>' : '—') +
       tr('name_match (input vs PAN)', r && r.name ? nameScore() + '% · threshold ' + cfg.threshold + '%' : '—') +
       tr('name_match (Aadhaar OCR)', st.ocrScore !== null && st.ocrScore !== undefined ? st.ocrScore + '%' : '<span class="pill">not needed</span>') +
+      tr('kra_status', st.kra ? '<span class="pill ' + (st.kra.found ? 'ok' : 'wn') + '">' + (st.kra.found ? 'KYC_REGISTERED · ' + st.kra.agency : 'NOT_REGISTERED') + '</span>' : '—') +
+      tr('decision', st.decision ? '<span class="pill ' + (st.decision === 'skip' ? 'ok' : '') + '">' + (st.decision === 'skip' ? 'documents skipped' : 'DigiLocker') + '</span>' : '—') +
       tr('documents', Object.entries(st.docs).filter(([k]) => cfg.docs.includes(k)).map(([k,v]) => '<span class="pill ' + (v === 'ok' ? 'ok' : '') + '">' + k + ' ' + v + '</span>').join(' ')) +
     '</table>' +
+    '<div class="lbl">Customer effort</div><table>' +
+      tr('screens_shown', String(st.seen.size)) +
+      tr('fields_typed', String(st.prefilled.pan ? 2 : 3) + ' (mobile, email' + (st.prefilled.pan ? '' : ', PAN') + ')') +
+      tr('background_calls', String(st.net.filter(e => e.bg).length) + ' with no screen of their own') +
+    '</table>' +
     '<div class="lbl">Reference IDs issued</div><table>' +
-      ['OTP','PULL','PAN','DL','OCR','ACC'].map(t => tr(t, '<code>' + ref(t) + '</code>' + (st.net.some(e => e.ref === ref(t)) ? ' <span class="pill ok">used</span>' : ' <span class="pill">reserved</span>'))).join('') +
+      ['OTP','EOTP','PULL','PANV','PAND','KRA','DL','OCR','ACC'].map(t => tr(t, '<code>' + ref(t) + '</code>' + (st.net.some(e => e.ref === ref(t)) ? ' <span class="pill ok">used</span>' : ' <span class="pill">reserved</span>'))).join('') +
     '</table>' +
     '<div class="lbl">Counters</div><table>' +
       tr('api_calls', st.net.length + ' (' + st.net.filter(e => e.own === 'decentro').length + ' billable to Decentro)') +
@@ -2049,20 +2263,40 @@ function renderGallery(){
 /* preview jumps straight to a screen with enough sample state to look real */
 function preview(id){
   st.run++; clearTimers();
-  st.form = { mobile:P.mobile, pan:P.pan, dob:P.dob, name:P.name, dlPinV:'' };
-  st.prefilled = { pan:true, dob:true, name:true };
-  st.pulled = id === 'prefill' && st.out === 'pullmiss' ? null : pullRes().data;
+  st.form = { mobile:P.mobile, email:P.email, pan:P.pan, dob:P.dob, name:P.name, dlPinV:'' };
+  st.prefilled = id === 'manualpan' ? {} : { pan:true, dob:true, name:true };
+  st.pulled = id === 'manualpan' ? null : pullRes().data;
   st.consentAt = istISO(); st.consent = true; st.dlConsent = true; st.finalConsent = true;
-  st.otp = '418302'; st.dlOtp = '902517'; st.otpLeft = cfg.otpWindow; st.dlLeft = cfg.otpWindow;
+  st.otp = '418302'; st.emOtp = '730164'; st.dlOtp = '902517';
+  st.otpLeft = cfg.otpWindow; st.emLeft = cfg.otpWindow; st.dlLeft = cfg.otpWindow;
   st.pan = panRecord();
+  st.kra = { found:st.out === 'krafound' || id === 'kraok', agency:'CVL KRA', date:'18 Mar 2023' };
   if (['manualreview','ocr'].includes(id)){ st.pan = { ...panRecord(), name:'R K SHARMA' }; st.ocrName = P.name.toUpperCase(); st.ocrScore = sim(P.name, P.name.toUpperCase()); st.reviewRef = ref('REV'); }
   else st.ocrScore = null;
   if (id === 'blocked') st.blockReason = ['notseeded','inoperative','invalidpan'].includes(st.out) ? st.out : 'notseeded';
-  if (id === 'dlalt') st.blockReason = st.out === 'dldeny' ? 'dldeny' : 'dldown';
+  else if (id === 'dlalt') st.blockReason = st.out === 'dldeny' ? 'dldeny' : 'dldown';
+  else st.blockReason = null;
   st.docs = { AADHAAR:'ok', PAN:'ok' };
-  st.startedAt = Date.now() - 108000; st.finishedAt = Date.now(); st.ended = id === 'done';
+  /* fill the backstage so screen 2 reads correctly for the previewed screen */
+  const done = { pull:'ok', panVal:'ok', panDet:'ok', kra:st.kra.found ? 'ok' : 'miss' };
+  st.ops = {};
+  if (!['host','mobile','otp','expired','email','eotp'].includes(id)){
+    let t = 0.8;
+    OPS.forEach(o => { st.ops[o.k] = { s:done[o.k], at:(t += 0.9),
+      detail:{ pull:P.pan + ' · ' + P.name, panVal:'VALID', panDet:st.pan.name + ' · seeded · ' + nameScore() + '% match',
+               kra:st.kra.found ? 'CVL KRA · registered 18 Mar 2023' : 'No record · documents needed' }[o.k] }; });
+    if (id === 'manualpan'){ st.ops.pull = { s:'miss', at:0.9, detail:'No record for this mobile number' }; delete st.ops.panVal; delete st.ops.panDet; delete st.ops.kra; }
+    if (id === 'blocked'){ const stop = { notseeded:'panDet', inoperative:'panVal', invalidpan:'panVal' }[st.blockReason];
+      st.ops[stop] = { s:'fail', at:2.6, detail:{ notseeded:'Aadhaar NOT_LINKED', inoperative:'INOPERATIVE', invalidpan:'NOT_FOUND at NSDL' }[st.blockReason] };
+      if (stop === 'panVal'){ delete st.ops.panDet; delete st.ops.kra; } else delete st.ops.kra; }
+    if (['ocr','manualreview'].includes(id)) st.ops.ocr = { s:id === 'ocr' ? 'ok' : 'fail', at:6.2, detail:st.ocrName + ' · ' + st.ocrScore + '%' };
+  }
+  st.decision = ['host','mobile','otp','expired','email','eotp','bg','manualpan'].includes(id) ? null
+    : id === 'blocked' ? null : (st.kra.found ? 'skip' : 'digilocker');
+  st.seen = new Set(['mobile','otp','email','eotp']); st.seen.add(id);
+  st.startedAt = Date.now() - 96000; st.finishedAt = Date.now(); st.ended = id === 'done';
   st.sdkOpen = id !== 'host'; st.busy = false; st.errs = {};
-  STEPS.forEach(s => { if (s.n < stepOf(id)) st.steps[s.n] = 'done'; });
+  st.steps = {}; STEPS.forEach(x => { if (x.n < stepOf(id)) st.steps[x.n] = 'done'; });
   st.screen = id; log('SCREEN', 'Preview · ' + SCREENS[id].t);
   render(); renderDev(); fit();
 }
@@ -2070,13 +2304,12 @@ function preview(id){
 /* ---------- Code ---------- */
 function renderCode(){
   const p = $('#tp-code'); if (!p || p.hidden) return;
-  const sampleBodies = { pull:pullReq(), pan:panReq(), dlInit:dlInitReq(), ocr:ocrReq(), open:openReq() };
-  const a = API.pan, body = sampleBodies.pan;
+  const a = API.panDet, body = panDetReq();
   p.innerHTML =
     '<div class="codehd"><b>Journey request</b><small>What your app hands the SDK</small></div>' +
     pre({ reference_id:P.base, consumer:{ urn:st.urn.decentro, environment:st.env },
       customer:{ mobile:st.form.mobile || P.mobile },
-      flow:{ data_pull:st.j === 'full', detailed_pan:true, digilocker:{ documents:cfg.docs, auth_mode:'MOBILE_OTP' }, ocr_fallback:cfg.ocr, esign:cfg.esign },
+      flow:{ data_pull:st.j === 'axis', show_confirmation_screen:st.j !== 'axis', pan_validation:true, detailed_pan:true, kra_check:true, digilocker:{ documents:cfg.docs, auth_mode:'MOBILE_OTP' }, ocr_fallback:cfg.ocr, esign:cfg.esign },
       policy:{ name_match_threshold:cfg.threshold, block_if_aadhaar_not_seeded:true },
       theme:{ primary:effTheme().pal.primary, button_corner_radius:effTheme().btnR, button_text_case:effTheme().bc } }) +
     '<div class="codehd"><b>cURL · Detailed PAN</b><small>The call behind step 3</small></div>' +
@@ -2093,17 +2326,20 @@ function renderCode(){
 
 /* ---------- Spec ---------- */
 const ELEMENTS = {
-  mobile:[['Mobile field','10 digits, numeric keyboard, 16px so iOS does not zoom. Validates on blur and on submit.'],['Consent checkbox','Blocks the primary action. Its timestamp is sent with every downstream call.'],['Send OTP','Disabled while the call is in flight; label swaps to a spinner.']],
+  mobile:[['Mobile field','10 digits, numeric keyboard, 16px so iOS does not zoom. Validates on blur and on submit.'],['Consent checkbox','One consent covering Data Pull, PAN, KRA and DigiLocker. Its timestamp is sent with every background call.'],['Send OTP','Disabled while the call is in flight; label swaps to a spinner.']],
   otp:[['OTP boxes','Six single-character inputs, autocomplete="one-time-code", auto-advance and backspace-retreat.'],['Auto-fill chip','Shown when the SMS Retriever API filled the code. Android only.'],['Timer','Counts down the configured window; Resend enables at zero and issues a new reference ID.']],
-  prefill:[['Source chip','Green "From Data Pull" or grey "You type this" on every field, so the customer can see what was fetched.'],['PAN field','Uppercased as typed, autocapitalize="characters", 10-char cap, ITD format validation.'],['Lock state','When prefilled fields are not editable, the field shows a lock icon and a surface background.']],
-  checks:[['Record card','Read-only rendering of the Detailed PAN response. Never editable.'],['Aadhaar linkage row','Pass/fail from aadhaar_seeding_status in the same response.'],['Name-match meter','Score against the configured threshold; colour follows pass/warn/fail, never colour alone.']],
-  blocked:[['Checks list','Shows which check failed and which were skipped, so the customer is not left guessing.'],['Remedy CTA','Deep links to the ITD action. Never a dead end.']],
+  email:[['Email field','type="email", validated on submit. The last thing the customer types in the happy path.']],
+  eotp:[['OTP boxes','Same component as the mobile OTP, different reference ID namespace.']],
+  bg:[['Loader','The only customer-facing artefact of four API calls. Deliberately uninformative — there is nothing for them to do.'],['Minimum dwell','Keep it on screen long enough to read, even if the chain returns faster.']],
+  manualpan:[['PAN field','Uppercased as typed, autocapitalize="characters", 10-char cap, ITD format validation.'],['Fallback only','Reached only on no_record_found. Never shown when Data Pull succeeds — that is the whole point.']],
+  blocked:[['Checks list','Names which background check failed and which were skipped.'],['Remedy CTA','Deep links to the ITD action, or back to PAN entry. Never a dead end.']],
+  kraok:[['Skip card','States plainly what was not needed. Reinforces that the KRA call paid for itself.']],
   dlintro:[['Document rows','Named documents only — whatever is in the documents array of the session request.'],['Consent checkbox','Separate from the step 1 consent; DigiLocker requires its own.']],
   dlotp:[['Government chrome','Header switches to DigiLocker and the "Powered by Decentro" footer is hidden: this is not our surface.']],
   dlfetch:[['Document row states','wait → load → ok/bad, one per document, driven by the fetch response.']],
-  ocr:[['OCR crop','The extracted region with the matched field highlighted, plus the confidence score.'],['Three-way comparison','Typed name, Aadhaar name and PAN name side by side before the verdict.']],
-  review:[['Verified record','Every row traces to a source call; nothing on this screen is user input.'],['Declaration','Required before submit; wording is fixed by Decentro, not themeable.']],
-  done:[['Comparison strip','Steps before against steps just now. This is the slide the business team screenshots.']]
+  ocr:[['Silent by design','The customer is told we are checking, never asked to retype a name.'],['Three-way comparison','Pulled profile, Aadhaar and PAN side by side before the verdict.']],
+  review:[['Verified record','Every row traces to a background call; nothing on this screen is user input.'],['Declaration','Required before submit; wording is fixed by Decentro, not themeable.']],
+  done:[['Comparison strip','Screens shown and fields typed against the old step count. This is the slide the business team screenshots.']]
 };
 function renderSpec(){
   const p = $('#tp-spec'); if (!p || p.hidden) return;
@@ -2137,7 +2373,9 @@ function handoff(){
     built_from:['Decentro-Demo.MD v1.1'],
     source_docs:['[PLACEHOLDER] Axis Securities onboarding requirement — attach the PRD or call notes before this ticket is picked up'],
     journeys:Object.entries(JOURNEYS).map(([k,j]) => ({ id:k, name:j.name, steps:j.steps, steps_today:j.today })),
-    policy:{ name_match_threshold:cfg.threshold, ocr_fallback:cfg.ocr, block_if_aadhaar_not_seeded:true, prefill_editable:cfg.prefillEditable, digilocker_pin_step:cfg.dlPin, otp_validity_seconds:cfg.otpWindow, documents:cfg.docs, esign:cfg.esign },
+    policy:{ show_confirmation_screen:false, name_match_threshold:cfg.threshold, ocr_fallback:cfg.ocr, block_if_aadhaar_not_seeded:true,
+      skip_documents_if_kra_registered:true, digilocker_pin_step:cfg.dlPin, otp_validity_seconds:cfg.otpWindow, documents:cfg.docs, esign:cfg.esign },
+    design_note:'PAN is pulled, validated and enriched in the background and is never shown to the customer before the signing screen. The only field they fill is the PAN fallback when Data Pull returns no_record_found.',
     screens:Object.entries(SCREENS).map(([k,s]) => ({ id:k, title:s.t, group:s.g, component:s.c, purpose:s.purpose,
       api:Object.values(API).filter(a => a.step === stepOf(k)).map(a => a.m + ' ' + a.path),
       strings:['' + k + '.title'] })),
@@ -2149,11 +2387,14 @@ function handoff(){
     responsive:{ verified_viewports:['1920x1080','1536x864','1440x900','1366x768','1280x720','1180x820','1024x768','820x1180','768x1024','430x932','390x844','360x640','844x390'], result:'clean' },
     calls_in_this_run:used,
     open_questions:[
-      'Confirm /v3/kyc/pan returns aadhaar_seeding_status and name_match in one response, and the exact key names.',
+      'Confirm the split between PAN validation and Detailed PAN: one call or two, and the exact path for the detailed variant.',
+      'Confirm the KRA search endpoint, which KRAs are covered (CVL, NDML, DOTEX, CAMS, Karvy) and the response envelope.',
+      'Confirm /v3/kyc/pan returns aadhaar_seeding_status and name_match, and the exact key names.',
       'Confirm the DigiLocker endpoints: session create, OTP validate and document fetch paths and envelopes.',
       'Confirm whether OCR is a separate call or part of the DigiLocker document response.',
-      'Axis owns mobile OTP and account creation in this build — confirm that split.',
-      'Confirm the name-match algorithm and the threshold Axis wants in production (85% assumed).'
+      'Axis owns mobile OTP, email OTP and account creation in this build — confirm that split.',
+      'Confirm the name-match algorithm and the threshold Axis wants in production (85% assumed).',
+      'Compliance: confirm that showing the fetched PAN only on the signing screen satisfies the account-opening record requirement, since the customer confirms nothing mid-journey.'
     ]
   };
 }
@@ -2196,19 +2437,23 @@ function renderShare(){
 
 /* ---------- developer-mode left panel: request editor + mock server ---------- */
 const MOCKS = [
-  { g:'Step 1 · Mobile OTP', a:API.otpGen, k:'otpGen', opts:[['ok','OTP sent'],['expire','Window closes before use'],['fail','Provider rejects the send']] },
-  { g:'Step 2 · Customer Data Pull', a:API.pull, k:'pull', opts:[['found','Record found · PAN, DOB, name'],['empty','no_record_found'],['partial','Record without PAN']] },
-  { g:'Step 3 · Detailed PAN', a:API.pan, k:'pan', opts:[['valid','VALID · seeded · name matches'],['partial','VALID · name match below threshold'],['notseeded','VALID · NOT_LINKED'],['inoperative','INOPERATIVE'],['notfound','pan_not_found']] },
-  { g:'Step 5 · DigiLocker', a:API.dlInit, k:'dl', opts:[['ok','Session created · documents issued'],['otpfail','OTP fails every attempt'],['deny','Consent declined'],['down','503 from the gateway']] },
-  { g:'Step 5 · OCR', a:API.ocr, k:'ocr', opts:[['match','Name extracted and matched'],['nomatch','Extracted but still below threshold'],['lowconf','Low confidence extraction']] },
-  { g:'Step 6 · Account open', a:API.open, k:'open', opts:[['ok','201 created'],['dup','Duplicate PAN already onboarded']] }
+  { g:'Step 1 · Mobile OTP', a:API.otpGen, k:'otpGen', opts:[['ok','OTP sent'],['expire','Window closes before use']] },
+  { g:'Step 2 · Email OTP', a:API.emGen, k:'emGen', opts:[['ok','OTP sent']] },
+  { g:'Background · Customer Data Pull', a:API.pull, k:'pull', opts:[['found','Record found · PAN, name, DOB'],['empty','no_record_found → customer types PAN']] },
+  { g:'Background · PAN validation', a:API.panVal, k:'panVal', opts:[['valid','VALID'],['inoperative','INOPERATIVE'],['notfound','pan_not_found']] },
+  { g:'Background · Detailed PAN', a:API.panDet, k:'panDet', opts:[['seeded','LINKED · name matches'],['partial','LINKED · name below threshold'],['notseeded','NOT_LINKED']] },
+  { g:'Background · KRA KYC status', a:API.kra, k:'kra', opts:[['none','Not registered → DigiLocker'],['found','KYC_REGISTERED → documents skipped']] },
+  { g:'Step 3 · DigiLocker', a:API.dlInit, k:'dl', opts:[['ok','Session created'],['otpfail','OTP fails every attempt'],['deny','Consent declined'],['down','503 from the gateway']] },
+  { g:'Background · OCR', a:API.ocr, k:'ocr', opts:[['match','Name extracted and matched'],['nomatch','Still below threshold → review']] },
+  { g:'Step 4 · Account open', a:API.open, k:'open', opts:[['ok','201 created']] }
 ];
-const OUT_FOR_MOCK = { 'pull:empty':'pullmiss', 'pan:partial':'namematch', 'pan:notseeded':'notseeded', 'pan:inoperative':'inoperative', 'pan:notfound':'invalidpan', 'dl:otpfail':'dlotpfail', 'dl:deny':'dldeny', 'dl:down':'dldown', 'ocr:nomatch':'ocrfail', 'otpGen:expire':'otpexpired' };
+const OUT_FOR_MOCK = { 'otpGen:expire':'otpexpired', 'pull:empty':'pullmiss', 'panVal:inoperative':'inoperative', 'panVal:notfound':'invalidpan',
+  'panDet:partial':'namematch', 'panDet:notseeded':'notseeded', 'kra:found':'krafound', 'dl:otpfail':'dlotpfail', 'dl:deny':'dldeny', 'dl:down':'dldown', 'ocr:nomatch':'ocrfail' };
 function reqText(){
   return JSON.stringify({ reference_id:P.base,
     consumer:{ urn:st.urn.decentro, environment:st.env },
     customer:{ mobile:st.form.mobile || P.mobile },
-    flow:{ data_pull:st.j === 'full', detailed_pan:true, digilocker:{ documents:cfg.docs, auth_mode:'MOBILE_OTP', pin_step:cfg.dlPin }, ocr_fallback:cfg.ocr, esign:cfg.esign },
+    flow:{ data_pull:st.j === 'axis', show_confirmation_screen:st.j !== 'axis', pan_validation:true, detailed_pan:true, kra_check:true, digilocker:{ documents:cfg.docs, auth_mode:'MOBILE_OTP', pin_step:cfg.dlPin }, ocr_fallback:cfg.ocr, esign:cfg.esign },
     policy:{ name_match_threshold:cfg.threshold, block_if_aadhaar_not_seeded:true, otp_validity_seconds:cfg.otpWindow },
     theme:{ primary:effTheme().pal.primary, button_corner_radius:effTheme().btnR, button_text_case:effTheme().bc, font:effTheme().pr.fontRes }
   }, null, 2);
@@ -2282,7 +2527,7 @@ function renderDevLeft(){
     if (o.policy && o.policy.name_match_threshold) cfg.threshold = o.policy.name_match_threshold;
     if (o.flow){ cfg.ocr = !!o.flow.ocr_fallback; cfg.esign = !!o.flow.esign;
       if (o.flow.digilocker){ cfg.docs = o.flow.digilocker.documents; cfg.dlPin = !!o.flow.digilocker.pin_step; }
-      st.j = o.flow.data_pull ? 'full' : 'manual'; }
+      st.j = o.flow.show_confirmation_screen ? 'confirm' : 'axis'; }
     buildCfg(); buildJourneys(); buildCompare();
     const m = st.form.mobile;
     restart(); st.form.mobile = m; st.consent = true;
@@ -2334,11 +2579,13 @@ $('#vp').addEventListener('click', e => { if (st.inspect){ e.preventDefault(); e
    LAYOUT
    ============================================================ */
 function fit(){
+  if (innerWidth <= 900 && st.view !== 'both'){ st.view = 'both';
+    document.body.classList.remove('view-cust','view-back'); document.body.classList.add('view-both'); segSet('#viewSeg', 'both'); }
   const fb = innerWidth <= 600 || innerHeight <= 500;
   document.body.classList.toggle('fb', fb);
   const d = $('#device'), z = $('#sizer');
   if (fb){ d.style.transform = ''; z.style.width = ''; z.style.height = ''; return; }
-  const r = $('#pwrap').getBoundingClientRect();
+  const r = $('#phwrap').getBoundingClientRect();
   const W = d.offsetWidth + 10, H = d.offsetHeight + 4;
   if (!r.height || !r.width) return;
   const s = Math.max(.2, Math.min(r.height / H, r.width / W, 1));
@@ -2347,7 +2594,7 @@ function fit(){
 }
 addEventListener('resize', fit);
 addEventListener('orientationchange', fit);
-new ResizeObserver(fit).observe($('#pwrap'));
+new ResizeObserver(fit).observe($('#phwrap'));
 
 function drawer(which, on){
   const el = $(which === 'ctl' ? '#ctl' : '#dev');
@@ -2412,13 +2659,14 @@ $('#darkSw').onclick = () => { st.th.dark = !st.th.dark; theme(); };
 $('#bsSeg').onclick = e => { const b = e.target.closest('button'); if (b){ st.th.btnStyle = b.dataset.v; theme(); } };
 $('#bcSeg').onclick = e => { const b = e.target.closest('button'); if (b){ st.th.btnCase = b.dataset.v; theme(); } };
 $('#spSeg').onclick = e => { const b = e.target.closest('button'); if (b){ st.speed = +b.dataset.v; segSet('#spSeg', st.speed); } };
+$('#viewSeg').onclick = e => { const b = e.target.closest('button'); if (b) setView(b.dataset.v); };
 $('#osSeg').onclick = e => { const b = e.target.closest('button'); if (b){ st.os = b.dataset.os; $('#device').dataset.os = st.os; segSet('#osSeg', st.os); render(); fit(); } };
 $('#modeSeg').onclick = e => { const b = e.target.closest('button'); if (b) setMode(b.dataset.v); };
 $('#btnRestart').onclick = restart;
 $('#btnRestartTop').onclick = restart;
 $('#btnBack').onclick = handleBack;
 $('#btnInspect').onclick = () => setInspect(!st.inspect);
-$('#btnFill').onclick = () => { st.form.pan = P.pan; st.form.dob = P.dob; st.form.name = P.name; log('USER', 'Sample details filled'); render(); };
+$('#btnFill').onclick = () => { st.form.pan = P.pan; log('USER', 'Sample PAN filled'); render(); };
 $('#tabs').onclick = e => { const t = e.target.closest('.tab'); if (t) showTab(t.dataset.tab); };
 $('#tp-scr').onclick = e => { const b = e.target.closest('[data-pv]'); if (b) preview(b.dataset.pv); };
 $('#tp-net').onclick = e => {
@@ -2453,7 +2701,7 @@ window.DEMO = {
 /* ============================================================
    BOOT
    ============================================================ */
-buildPresets(); freshRun(); syncControls(); theme(); buildTabs();
+buildPresets(); freshRun(); syncControls(); theme(); buildTabs(); setView('both');
 restart();
 if (location.hash === '#dev') setMode('dev'); else coach();
 fit(); requestAnimationFrame(fit);
