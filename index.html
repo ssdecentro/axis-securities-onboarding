@@ -991,6 +991,7 @@ const API = {
   panDet:  { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/v3/kyc/pan/detailed',                     ill:true,  bg:true, label:'Detailed PAN' },
   kra:     { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/v2/kyc/kra/search',                       ill:true,  bg:true, label:'KRA KYC status' },
   dlInit:  { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/kyc/digilocker/documents',                ill:false, label:'DigiLocker \u00b7 start session' },
+  dlOtpGen:{ step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/kyc/digilocker/otp/generate',             ill:true,  label:'DigiLocker \u00b7 send OTP' },
   dlOtp:   { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/kyc/digilocker/otp/validate',             ill:true,  label:'DigiLocker \u00b7 validate OTP' },
   dlFetch: { step:3, m:'GET',  set:'DECENTRO', own:'decentro', path:'/kyc/digilocker/documents/{session_id}',   ill:true,  label:'DigiLocker \u00b7 fetch documents' },
   ocr:     { step:3, m:'POST', set:'DECENTRO', own:'decentro', path:'/v3/kyc/ocr/document',                     ill:true,  bg:true, label:'OCR \u00b7 extract name' },
@@ -1009,7 +1010,7 @@ const OPS = [
 const STEPS = [
   { n:1, k:'Mobile',    ids:['mobile','otp','expired'] },
   { n:2, k:'Email',     ids:['email','eotp'] },
-  { n:3, k:'Documents', ids:['bg','manualpan','blocked','kraok','dlintro','dlotp','dlpin','dlfetch','ocr','dlalt','locked','manualreview'] },
+  { n:3, k:'Documents', ids:['bg','manualpan','blocked','kraok','dlintro','dlauth','dlotp','dlpin','dlfetch','ocr','dlalt','locked','manualreview'] },
   { n:4, k:'Account',   ids:['review','done'] }
 ];
 const stepOf = id => (STEPS.find(s => s.ids.includes(id)) || STEPS[0]).n;
@@ -1025,6 +1026,7 @@ const SCREENS = {
   blocked:     { t:'3 \u00b7 Cannot proceed',     g:'Errors',   tone:'bad', c:'Empty + Alert + Button',    purpose:'A hard stop from ITD surfaced out of the background chain: PAN invalid, inoperative, or not seeded with Aadhaar.' },
   kraok:       { t:'3 \u00b7 Already KYC-verified',g:'Results', tone:'ok',  c:'Empty + Card + Button',     purpose:'KRA holds a record, so no documents are collected. DigiLocker is skipped entirely.' },
   dlintro:     { t:'3 \u00b7 DigiLocker consent', g:'Payment',  tone:'',    c:'Card + Checkbox + Button',  purpose:'The page Axis plans to show straight after the email OTP. What will be fetched and why.' },
+  dlauth:      { t:'3 \u00b7 DigiLocker sign-in',  g:'Payment',  tone:'',    c:'Field + Button',            purpose:'DigiLocker\u2019s own screen. The mobile number arrives pre-filled from the session request, and the customer taps Proceed themselves before any OTP is sent.' },
   dlotp:       { t:'3 \u00b7 DigiLocker OTP',     g:'Payment',  tone:'',    c:'InputGroup (OTP) + Button', purpose:'Government-owned screen. Mobile-based DigiLocker auth on the number from step 1.' },
   dlpin:       { t:'3 \u00b7 DigiLocker PIN',     g:'Payment',  tone:'',    c:'Field + Button',            purpose:'DigiLocker security PIN, where the account has one set.' },
   dlfetch:     { t:'3 \u00b7 Fetching documents', g:'Progress', tone:'',    c:'Progress + Document rows',  purpose:'Issued Aadhaar XML and PAN pulled from the locker, signatures checked.' },
@@ -1103,7 +1105,7 @@ function freshRun(){
     docs:{ AADHAAR:'wait', PAN:'wait' }, blockReason:null, reviewRef:null,
     net:[], netN:0, cbs:[], netOpen:null, overlay:null, steps:{}, ended:false,
     ops:{}, seen:new Set(),
-    form:{ mobile:'', email:'', pan:'', dob:'', name:'', dlPinV:'' }, prefilled:{}
+    form:{ mobile:'', email:'', pan:'', dob:'', name:'', dlMobile:'', dlPinV:'' }, prefilled:{}
   });
   clearTimers();
 }
@@ -1489,16 +1491,32 @@ const startDl = guard(async () => {
   st.busy = false;
   if (down){ st.blockReason = 'dldown'; go('dlalt'); return; }
   await splash('DigiLocker', 'Handing over to DigiLocker. ' + effTheme().pr.partner + ' never sees your DigiLocker credentials.', 1500);
-  if (st.out === 'dldeny'){
-    net({ a:API.dlOtp, ref:ref('DL'), path:'/kyc/digilocker/consent', body:{ reference_id:ref('DL'), session_id:'dlsess_…' }, http:200,
-      res:envl(hex32(),'FAILURE','consent_declined',{ declined_at:istISO() },'Customer declined the DigiLocker consent'),
-      ms:msr(300, 700), txt:'200 · consent_declined',
-      sum:'Declined on DigiLocker’s own consent screen — we only ever receive the verdict' });
-    st.blockReason = 'dldeny';
-    cb('onboarding.step_failed', { reference_id:ref('DL'), step:'DIGILOCKER', status:'CONSENT_DECLINED', timestamp:istISO() }, 'wn');
-    go('dlalt'); return;
-  }
-  st.dlOtp = ''; startOtpTimer('dl'); go('dlotp');
+  st.form.dlMobile = st.form.mobile;
+  go('dlauth');
+  if (st.out === 'dldeny'){ await sl(1900); if (st.screen === 'dlauth') cancelDl(); }
+});
+
+/* DigiLocker's own sign-in screen. The number is pre-filled from the session request;
+   nothing is sent until the customer taps Proceed themselves. */
+const proceedDl = guard(async () => {
+  const m = (st.form.dlMobile || '').replace(/\D/g, '');
+  if (!/^[6-9]\d{9}$/.test(m)){ st.errs.dlMobile = 'Enter the 10-digit mobile number registered with DigiLocker.'; render(); return; }
+  st.errs = {}; st.busy = true; render();
+  await sl(msr(400, 850));
+  net({ a:API.dlOtpGen, ref:ref('DL'), body:{ reference_id:ref('DL'), session_id:'dlsess_x', mobile:m }, http:200,
+    res:envl(hex32(),'SUCCESS','otp_sent',{ sent_to:maskMobile(m), valid_for_seconds:cfg.otpWindow }), ms:msr(350, 900),
+    txt:'200 - OTP sent', sum:'Sent only after the customer tapped Proceed on DigiLocker\u2019s own screen' });
+  st.busy = false; st.dlOtp = ''; startOtpTimer('dl'); go('dlotp');
+});
+
+const cancelDl = guard(async () => {
+  net({ a:API.dlOtp, ref:ref('DL'), path:'/kyc/digilocker/consent', body:{ reference_id:ref('DL'), session_id:'dlsess_x' }, http:200,
+    res:envl(hex32(),'FAILURE','consent_declined',{ declined_at:istISO() },'Customer declined the DigiLocker consent'),
+    ms:msr(300, 700), txt:'200 - consent_declined',
+    sum:'Declined on DigiLocker\u2019s own screen \u2014 we only ever receive the verdict' });
+  st.blockReason = 'dldeny';
+  cb('onboarding.step_failed', { reference_id:ref('DL'), step:'DIGILOCKER', status:'CONSENT_DECLINED', timestamp:istISO() }, 'wn');
+  go('dlalt');
 });
 
 const declineDl = () => { log('USER', 'Declined the DigiLocker consent'); st.blockReason = 'dldeny'; cb('onboarding.step_failed', { reference_id:ref('DL'), step:'DIGILOCKER', status:'CONSENT_DECLINED', timestamp:istISO() }, 'wn'); go('dlalt'); };
@@ -1624,7 +1642,7 @@ function render(){
   $('#sdk').toggleAttribute('inert', !st.sdkOpen);
   if (st.sdkOpen){ renderHead(T); renderRail(); $('#sbody').innerHTML = screenBody(T); bindBody(); }
   renderFlow(); renderCaption(); renderBackstage();
-  $('#sfoot').hidden = ['dlotp','dlpin'].includes(st.screen);
+  $('#sfoot').hidden = ['dlauth','dlotp','dlpin'].includes(st.screen);
   $('#btnFill').hidden = st.screen !== 'manualpan';
   $('#btnBack').disabled = !st.sdkOpen;
   paintBars();
@@ -1655,10 +1673,10 @@ function renderHost(T){
 }
 
 /* ---------- journey chrome ---------- */
-const BACKABLE = { mobile:null, otp:'mobile', email:null, eotp:'email', bg:null, manualpan:null, dlintro:null, dlotp:'dlintro', dlpin:'dlotp', kraok:null, review:null };
+const BACKABLE = { mobile:null, otp:'mobile', email:null, eotp:'email', bg:null, manualpan:null, dlintro:null, dlauth:'dlintro', dlotp:'dlauth', dlpin:'dlotp', kraok:null, review:null };
 function renderHead(T){
   const sc = SCREENS[st.screen] || {};
-  const gov = ['dlotp','dlpin'].includes(st.screen);
+  const gov = ['dlauth','dlotp','dlpin'].includes(st.screen);
   const back = BACKABLE[st.screen];
   $('#shead').innerHTML =
     (back ? '<button class="s-x s-bk" id="sback" type="button" aria-label="Back"' + dc('Button (ghost)') + '>' + svg('chev',19).replace('<svg','<svg style="transform:rotate(180deg)"') + '</button>'
@@ -1805,6 +1823,14 @@ function screenBody(T){
     check('dlConsent', 'I allow DigiLocker to share these documents with ' + esc(T.pr.partner) + ' for opening my account.') +
     note('', 'You sign in to DigiLocker with ' + esc(maskMobile(st.form.mobile)) + ' — the number you already verified. ' + esc(T.pr.partner) + ' never sees your DigiLocker credentials.') +
     '<div class="s-act">' + btn('go5', 'Continue with DigiLocker', { busy:st.busy, dis:st.busy, k:'cta.digilocker' }) + btn('goDecline', 'Upload documents instead', { txt:true }) + '</div>',
+
+  dlauth: () =>
+    '<h2 class="s-title">Sign in to DigiLocker</h2>' +
+    '<p class="s-sub">' + esc(effTheme().pr.partner) + ' is requesting ' + cfg.docs.map(d => d === 'AADHAAR' ? 'your Aadhaar' : 'your PAN').join(' and ') + ' from your DigiLocker account.</p>' +
+    field('dlMobile', 'Mobile number registered with DigiLocker', { tel:true, im:'numeric', ac:'tel', max:10,
+      hint:'Pre-filled from the number you already verified \u2014 you do not type it again.' }) +
+    note('', 'An OTP is sent to this number only after you tap Proceed. ' + esc(effTheme().pr.partner) + ' never sees your DigiLocker credentials.') +
+    '<div class="s-act">' + btn('goDlGo', 'Proceed', { busy:st.busy, dis:st.busy, k:'cta.digilocker_proceed' }) + btn('goDlNo', 'Cancel', { txt:true }) + '</div>',
 
   dlotp: () =>
     '<h2 class="s-title">Sign in to DigiLocker</h2>' +
@@ -1960,7 +1986,7 @@ const ACT = {
   go1:submitMobile, go2:submitOtp, goEm1:submitEmail, goEm2:submitEotp, goPan:submitManualPan,
   goKra:fromKraOk, go5:startDl, go6:submitDlOtp, go7:() => submitDlPin(), go8:submitReview,
   goResend:resendOtp, goEditMobile:() => { clearTimers(); st.otp = ''; st.errs = {}; go('mobile'); },
-  goDecline:declineDl, goRetryDl:() => { st.out = 'clean'; buildOutcomes(); st.dlConsent = true; go('dlintro'); startDl(); },
+  goDecline:declineDl, goDlGo:proceedDl, goDlNo:() => { log('USER', 'Cancelled on the DigiLocker screen'); cancelDl(); }, goRetryDl:() => { st.out = 'clean'; buildOutcomes(); st.dlConsent = true; go('dlintro'); startDl(); },
   goUpload:() => toast('Manual upload is out of scope for this prototype'),
   goFix:() => { if (st.blockReason === 'invalidpan'){ st.errs = {}; st.form.pan = ''; go('manualpan'); return; } toast('Opens the ITD linkage page in a browser'); },
   goRestart:restart, goHome:() => { st.sdkOpen = false; st.screen = 'host'; render(); renderDev(); },
@@ -2101,6 +2127,7 @@ const CAPTION = {
   blocked:'A hard stop out of the background chain. Caught before the customer touched DigiLocker.',
   kraok:'KRA already holds the record, so document collection is skipped entirely. Three screens, start to signed.',
   dlintro:'The page Axis plans to show straight after the email OTP — and the customer has confirmed nothing to get here.',
+  dlauth:'DigiLocker\u2019s own screen, with the number already filled in. The customer taps Proceed \u2014 nothing is sent before they do.',
   dlotp:'DigiLocker’s own screen, on the number from step 1. Axis never touches the credentials — the differentiator against running your own DigiLocker keys.',
   dlpin:'The DigiLocker PIN step, on for accounts that have one set.',
   dlfetch:'Issued XML with UIDAI’s signature, not a photo of a card.',
@@ -2267,7 +2294,7 @@ function preview(id){
   st.prefilled = id === 'manualpan' ? {} : { pan:true, dob:true, name:true };
   st.pulled = id === 'manualpan' ? null : pullRes().data;
   st.consentAt = istISO(); st.consent = true; st.dlConsent = true; st.finalConsent = true;
-  st.otp = '418302'; st.emOtp = '730164'; st.dlOtp = '902517';
+  st.otp = '418302'; st.emOtp = '730164'; st.dlOtp = '902517'; st.form.dlMobile = P.mobile;
   st.otpLeft = cfg.otpWindow; st.emLeft = cfg.otpWindow; st.dlLeft = cfg.otpWindow;
   st.pan = panRecord();
   st.kra = { found:st.out === 'krafound' || id === 'kraok', agency:'CVL KRA', date:'18 Mar 2023' };
@@ -2335,6 +2362,7 @@ const ELEMENTS = {
   blocked:[['Checks list','Names which background check failed and which were skipped.'],['Remedy CTA','Deep links to the ITD action, or back to PAN entry. Never a dead end.']],
   kraok:[['Skip card','States plainly what was not needed. Reinforces that the KRA call paid for itself.']],
   dlintro:[['Document rows','Named documents only — whatever is in the documents array of the session request.'],['Consent checkbox','Separate from the step 1 consent; DigiLocker requires its own.']],
+  dlauth:[['Pre-filled mobile','Passed in the session request, so the customer never retypes the number they verified in step 1.'],['Proceed button','The customer acts before any OTP leaves DigiLocker. Nothing is auto-submitted on their behalf.'],['Cancel','DigiLocker\u2019s own exit. Returns consent_declined and the journey offers manual upload.']],
   dlotp:[['Government chrome','Header switches to DigiLocker and the "Powered by Decentro" footer is hidden: this is not our surface.']],
   dlfetch:[['Document row states','wait → load → ok/bad, one per document, driven by the fetch response.']],
   ocr:[['Silent by design','The customer is told we are checking, never asked to retype a name.'],['Three-way comparison','Pulled profile, Aadhaar and PAN side by side before the verdict.']],
